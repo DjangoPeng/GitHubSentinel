@@ -1,0 +1,9 @@
+{
+    "github_token": "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",
+    "notification_settings": {
+        "email": "your_email@example.com",
+        "slack_webhook_url": "your_slack_webhook_url"
+    },
+    "subscriptions_file": "subscriptions.json",
+    "update_interval": 86400
+}

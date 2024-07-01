@@ -1,9 +1,11 @@
 class ReportGenerator:
     def generate(self, updates):
-        # Implement report generation logic
-        report = ""
-        for repo, events in updates.items():
+        report = "Latest Release Information:\n\n"
+        for repo, release in updates.items():
             report += f"Repository: {repo}\n"
-            for event in events:
-                report += f"- {event['type']} at {event['created_at']}\n"
+            report += f"Latest Version: {release['tag_name']}\n"
+            report += f"Release Name: {release['name']}\n"
+            report += f"Published at: {release['published_at']}\n"
+            report += f"Release Notes:\n{release['body']}\n"
+            report += "-" * 40 + "\n"
         return report
