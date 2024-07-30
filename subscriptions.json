@@ -1,3 +1,4 @@
 [
-    "langchain-ai/langchain"
+    "langchain-ai/langchain",
+    "DjangoPeng/openai-quickstart"
 ]

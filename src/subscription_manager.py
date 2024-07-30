@@ -13,7 +13,7 @@ class SubscriptionManager:
         with open(self.subscriptions_file, 'w') as f:
             json.dump(self.subscriptions, f, indent=4)
     
-    def get_subscriptions(self):
+    def list_subscriptions(self):
         return self.subscriptions
     
     def add_subscription(self, repo):
