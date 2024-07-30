@@ -36,7 +36,7 @@ def main():
     
     scheduler_thread = threading.Thread(target=run_scheduler, args=(scheduler,))
     scheduler_thread.daemon = True
-    scheduler_thread.start()
+    # scheduler_thread.start()
 
     parser = command_handler.parser
     command_handler.print_help()

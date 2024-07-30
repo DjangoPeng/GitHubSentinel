@@ -15,7 +15,7 @@ class Scheduler:
 
     def run(self):
         while True:
-            subscriptions = self.subscription_manager.get_subscriptions()
+            subscriptions = self.subscription_manager.list_subscriptions()
             for repo in subscriptions:
                 updates = self.github_client.fetch_updates(repo)
                 markdown_file_path = self.report_generator.export_daily_progress(repo, updates)
