@@ -1,4 +1,5 @@
 [
     "langchain-ai/langchain",
-    "DjangoPeng/openai-quickstart"
+    "DjangoPeng/openai-quickstart",
+    "ollama/ollama"
 ]

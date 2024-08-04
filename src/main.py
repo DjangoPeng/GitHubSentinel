@@ -13,6 +13,7 @@ from report_generator import ReportGenerator
 from llm import LLM
 from subscription_manager import SubscriptionManager
 from command_handler import CommandHandler
+from logger import LOG
 
 def run_scheduler(scheduler):
     scheduler.start()
@@ -52,9 +53,9 @@ def main():
                     continue
                 args.func(args)
             except SystemExit as e:
-                print("Invalid command. Type 'help' to see the list of available commands.")
+                LOG.error("Invalid command. Type 'help' to see the list of available commands.")
         except Exception as e:
-            print(f"Unexpected error: {e}")
+            LOG.error(f"Unexpected error: {e}")
 
 if __name__ == '__main__':
     main()
