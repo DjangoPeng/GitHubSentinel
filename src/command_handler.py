@@ -27,12 +27,14 @@ class CommandHandler:
         parser_list = subparsers.add_parser('list', help='List all subscriptions')
         parser_list.set_defaults(func=self.list_subscriptions)
 
-        parser_fetch = subparsers.add_parser('fetch', help='Fetch updates immediately')
-        parser_fetch.set_defaults(func=self.fetch_updates)
-
         parser_export = subparsers.add_parser('export', help='Export daily progress')
         parser_export.add_argument('repo', type=str, help='The repository to export progress from (e.g., owner/repo)')
         parser_export.set_defaults(func=self.export_daily_progress)
+
+        parser_export_range = subparsers.add_parser('export-range', help='Export progress over a range of dates')
+        parser_export_range.add_argument('repo', type=str, help='The repository to export progress from (e.g., owner/repo)')
+        parser_export_range.add_argument('days', type=int, help='The number of days to export progress for')
+        parser_export_range.set_defaults(func=self.export_progress_by_date_range)
 
         parser_generate = subparsers.add_parser('generate', help='Generate daily report from markdown file')
         parser_generate.add_argument('file', type=str, help='The markdown file to generate report from')
@@ -57,14 +59,13 @@ class CommandHandler:
         for sub in subscriptions:
             print(f"  - {sub}")
 
-    def fetch_updates(self, args):
-        updates = self.github_client.fetch_updates()
-        for update in updates:
-            print(update)
-
     def export_daily_progress(self, args):
         self.github_client.export_daily_progress(args.repo)
         print(f"Exported daily progress for repository: {args.repo}")
+
+    def export_progress_by_date_range(self, args):
+        self.github_client.export_progress_by_date_range(args.repo, days=args.days)
+        print(f"Exported progress for the last {args.days} days for repository: {args.repo}")
 
     def generate_daily_report(self, args):
         self.report_generator.generate_daily_report(args.file)
