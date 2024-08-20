@@ -5,7 +5,7 @@ class Config:
         self.load_config()
     
     def load_config(self):
-        with open('config.json', 'r') as f:
+        with open('../config.json', 'r') as f:
             config = json.load(f)
             self.github_token = config.get('github_token')
             self.notification_settings = config.get('notification_settings')

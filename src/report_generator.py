@@ -6,7 +6,7 @@ from datetime import date
 class ReportGenerator:
     def __init__(self, llm):
         self.llm = llm
-
+    '''
     def export_daily_progress(self, repo, updates):
         file_path = f'daily_progress/{repo.replace("/", "_")}_{date.today()}.md'
         with open(file_path, 'w') as file:
@@ -21,7 +21,7 @@ class ReportGenerator:
             for pr in updates['pull_requests']:
                 file.write(f"- {pr}\n")
         return file_path
-
+    '''
     def generate_daily_report(self, markdown_file_path):
         with open(markdown_file_path, 'r') as file:
             markdown_content = file.read()

@@ -28,6 +28,7 @@ class CommandHandler:
         parser_list.set_defaults(func=self.list_subscriptions)
 
         parser_fetch = subparsers.add_parser('fetch', help='Fetch updates immediately')
+        parser_fetch.add_argument('repo', type=str, help='The repository to subscribe to (e.g., owner/repo)')
         parser_fetch.set_defaults(func=self.fetch_updates)
 
         parser_export = subparsers.add_parser('export', help='Export daily progress')
@@ -58,7 +59,7 @@ class CommandHandler:
             print(f"  - {sub}")
 
     def fetch_updates(self, args):
-        updates = self.github_client.fetch_updates()
+        updates = self.github_client.fetch_updates(args.repo)
         for update in updates:
             print(update)
 

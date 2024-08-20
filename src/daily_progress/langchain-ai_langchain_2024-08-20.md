@@ -1,0 +1,65 @@
+# langchain-ai/langchain Daily Progress - 2024-08-20
+
+## Issues
+- create_tool_calling_agent only return tool result in json instead of a straightfoward answer #25568
+- Fix UnionType type var replacement #25566
+- create_tool_calling_agent is not working for AzureChatOpenAI #25564
+- core[patch]: Allow bound models as token_counter in trim_messages #25563
+- ChatOpenAI http_client cannot be specified due to client being checked for httpx.SyncClient and httpx.AsyncClient simultaneously. #25561
+- docs: Adding Azure Database for PostgreSQL docs #25560
+- langchain-huggingface CI crashes unexpectedly #25558
+- docs: `integrations` reference updates 10 #25556
+- Ollama Model support For tool calling #25555
+- docs: added Constitutional AI references #25553
+- Community: Change Arcee LLM and Arcee Utils #25551
+- core: fix fallback context overwriting #25550
+- docs: ollama doc update (toolcalling, install, notebook examples) #25549
+- community: Huridocs pdf loader more functionality added #25543
+- conlist: Call expression not allowed in type expression #25535
+- core: fix VectorStoreRetriever._get_relevant_documents error #25530
+- VectorStoreRetriever can't correctly handle keyword parameters from invoke() #25528
+- community: [improvement] An approach to (partially) solve the "request too large" issue on browser automation  #25527
+- StructuredQueryOutputParser throws an error when the contains date and time #25526
+- core: Add B(bugbear) ruff rules #25520
+- Chroma search with vector and search with text get different result using the same embedding function #25517
+- langchain-core: added pydantic parser fix for issue #24995 #25516
+- core[patch]: content block prompt template #25514
+- more embeddings standard tests #25513
+- docs: `integrations` reference update 9 #25511
+- OpenAI refusals for structured output not added to `AIMessageChunk.additional_kwargs` when a dict is passed as the schema to `ChatOpenAI.with_structured_output` #25510
+- Community: Add Union provider - Agentic RAG example #25509
+- langchain-box: add langchain box package and DocumentLoader #25506
+- Amazon Neptune OC Chain -  #25505
+- openai[major] -- test with pydantic 2 and langchain 0.3 #25503
+
+## Pull Requests
+- Fix UnionType type var replacement #25566
+- core[patch]: Allow bound models as token_counter in trim_messages #25563
+- docs: Adding Azure Database for PostgreSQL docs #25560
+- docs: `integrations` reference updates 10 #25556
+- docs: added Constitutional AI references #25553
+- Community: Change Arcee LLM and Arcee Utils #25551
+- core: fix fallback context overwriting #25550
+- docs: ollama doc update (toolcalling, install, notebook examples) #25549
+- community: Huridocs pdf loader more functionality added #25543
+- core: fix VectorStoreRetriever._get_relevant_documents error #25530
+- community: [improvement] An approach to (partially) solve the "request too large" issue on browser automation  #25527
+- core: Add B(bugbear) ruff rules #25520
+- langchain-core: added pydantic parser fix for issue #24995 #25516
+- core[patch]: content block prompt template #25514
+- more embeddings standard tests #25513
+- docs: `integrations` reference update 9 #25511
+- Community: Add Union provider - Agentic RAG example #25509
+- langchain-box: add langchain box package and DocumentLoader #25506
+- openai[major] -- test with pydantic 2 and langchain 0.3 #25503
+- standard-tests[patch]: async variations of all tests #25501
+- [docs]: more indexing of document loaders #25500
+- json mode standard test #25497
+- core[minor]: add langsmith document loader #25493
+- docs: Fix typo in openai llm integration notebook #25492
+- openai[patch]: Upgrade @root_validators in preparation for pydantic 2 migration #25491
+- community : [bugfix] Use document ids as keys in AzureSearch vectorstore #25486
+- community: added stream and astream to chatyandexgpt #25483
+- [Doc] Add docs for `ZhipuAIEmbeddings` #25467
+- docs 0.3 release #25459
+- docs: added ColBERT reference #25452

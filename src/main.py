@@ -2,7 +2,7 @@
 
 import threading
 import shlex
-
+import os
 from argparse import ArgumentError
 
 from config import Config
@@ -19,7 +19,7 @@ def run_scheduler(scheduler):
 
 def main():
     config = Config()
-    github_client = GitHubClient(config.github_token)
+    github_client = GitHubClient(os.getenv("github_token"))
     notifier = Notifier(config.notification_settings)
     llm = LLM()
     report_generator = ReportGenerator(llm)
@@ -48,6 +48,7 @@ def main():
                 break
             try:
                 args = parser.parse_args(shlex.split(user_input))
+                print(args)
                 if args.command is None:
                     continue
                 args.func(args)
