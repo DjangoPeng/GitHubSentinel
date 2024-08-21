@@ -20,9 +20,6 @@ class ReportGenerator:
             file.write("\n## Issues\n")
             for issue in updates['issues']:
                 file.write(f"- {issue['title']} #{issue['number']}\n")
-            file.write("\n## Pull Requests\n")
-            for pr in updates['pull_requests']:
-                file.write(f"- {pr['title']} #{pr['number']}\n")
         return file_path
 
     def export_progress_by_date_range(self, repo, updates, days):
@@ -41,9 +38,6 @@ class ReportGenerator:
             file.write("\n## Issues Closed in the Last {days} Days\n")
             for issue in updates['issues']:
                 file.write(f"- {issue['title']} #{issue['number']}\n")
-            file.write("\n## Pull Requests Merged in the Last {days} Days\n")
-            for pr in updates['pull_requests']:
-                file.write(f"- {pr['title']} #{pr['number']}\n")
         
         LOG.info(f"Exported time-range progress to {file_path}")  # 记录导出日志
         return file_path
@@ -58,7 +52,6 @@ class ReportGenerator:
         report_file_path = os.path.splitext(markdown_file_path)[0] + "_report.md"
         with open(report_file_path, 'w+') as report_file:
             report_file.write(report)  # 写入生成的报告
-
 
         LOG.info(f"Generated report saved to {report_file_path}")  # 记录生成报告日志
         

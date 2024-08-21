@@ -66,9 +66,6 @@ class GitHubClient:
             file.write("\n## Issues Closed Today\n")
             for issue in updates['issues']:  # 写入今天关闭的问题
                 file.write(f"- {issue['title']} #{issue['number']}\n")
-            file.write("\n## Pull Requests Merged Today\n")
-            for pr in updates['pull_requests']:  # 写入今天合并的拉取请求
-                file.write(f"- {pr['title']} #{pr['number']}\n")
         
         LOG.info(f"Exported daily progress to {file_path}")  # 记录日志
         return file_path
@@ -91,9 +88,6 @@ class GitHubClient:
             file.write(f"\n## Issues Closed in the Last {days} Days\n")
             for issue in updates['issues']:  # 写入在指定日期内关闭的问题
                 file.write(f"- {issue['title']} #{issue['number']}\n")
-            file.write(f"\n## Pull Requests Merged in the Last {days} Days\n")
-            for pr in updates['pull_requests']:  # 写入在指定日期内合并的拉取请求
-                file.write(f"- {pr['title']} #{pr['number']}\n")
         
         LOG.info(f"Exported time-range progress to {file_path}")  # 记录日志
         return file_path
