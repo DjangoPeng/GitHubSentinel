@@ -3,3 +3,4 @@ openai
 gradio
 loguru
 python-daemon
+python-dotenv
