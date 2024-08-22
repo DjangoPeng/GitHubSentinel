@@ -24,6 +24,12 @@ pip install -r requirements.txt
 
 ### 2. 配置应用
 
+复制.env.example到.env，设置.env中环境变量。
+
+```shell
+cp .env.example .env
+```
+
 编辑 `config.json` 文件，以设置您的 GitHub 令牌、通知设置、订阅文件和更新间隔：
 
 ```json

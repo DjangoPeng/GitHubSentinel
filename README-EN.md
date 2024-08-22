@@ -24,6 +24,12 @@ pip install -r requirements.txt
 
 ### 2. Configure the Application
 
+Copy .env.example to .env and set the environment variables in .env.
+
+```shell
+cp .env.example .env
+```
+
 Edit the `config.json` file to set up your GitHub token, notification settings, subscription file, and update interval:
 
 ```json

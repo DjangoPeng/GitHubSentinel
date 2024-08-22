@@ -8,6 +8,9 @@ from llm import LLM  # 从llm模块导入LLM类，可能用于语言模型相关
 from subscription_manager import SubscriptionManager  # 从subscription_manager模块导入SubscriptionManager类，管理订阅
 from command_handler import CommandHandler  # 从command_handler模块导入CommandHandler类，处理命令行命令
 from logger import LOG  # 从logger模块导入LOG对象，用于日志记录
+from dotenv import load_dotenv # 用于加载.env文件中的环境变量
+
+load_dotenv() # 加载环境变量
 
 def main():
     config = Config()  # 创建配置实例
