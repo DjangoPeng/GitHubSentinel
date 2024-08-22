@@ -50,9 +50,9 @@ class ReportGenerator:
         report = self.llm.generate_daily_report(markdown_content)  # 调用LLM生成报告
 
         report_file_path = os.path.splitext(markdown_file_path)[0] + "_report.md"
-        with open(report_file_path, 'w+') as report_file:
+        with open(report_file_path, 'w+', encoding='utf-8') as report_file:
             report_file.write(report)  # 写入生成的报告
-
+    
         LOG.info(f"Generated report saved to {report_file_path}")  # 记录生成报告日志
         
         return report, report_file_path
@@ -66,7 +66,7 @@ class ReportGenerator:
         report = self.llm.generate_daily_report(markdown_content)
 
         report_file_path = os.path.splitext(markdown_file_path)[0] + f"_report.md"
-        with open(report_file_path, 'w+') as report_file:
+        with open(report_file_path, 'w+', encoding='utf-8') as report_file:
             report_file.write(report)
 
 
