@@ -8,7 +8,7 @@ PID_FILE="./run/$DAEMON_NAME.pid"
 
 start() {
     echo "Starting $DAEMON_NAME..."
-    python3 $DAEMON_PATH > $LOG_FILE 2>&1 &
+    nohup python3 $DAEMON_PATH > $LOG_FILE 2>&1 &
     echo $! > $PID_FILE
     echo "$DAEMON_NAME started."
 }

@@ -24,18 +24,31 @@ pip install -r requirements.txt
 
 ### 2. 配置应用
 
-编辑 `config.json` 文件，以设置您的 GitHub 令牌、通知设置、订阅文件和更新间隔：
+编辑 `config.json` 文件，以设置您的 GitHub Token、Email 设置（以腾讯企微邮箱为例）、订阅文件和更新设置：
 
 ```json
 {
     "github_token": "your_github_token",
-    "notification_settings": {
-        "email": "your_email@example.com",
-        "slack_webhook_url": "your_slack_webhook_url"
+    "email":  {
+        "smtp_server": "smtp.exmail.qq.com",
+        "smtp_port": 465,
+        "from": "from_email@example.com",
+        "password": "your_email_password",
+        "to": "to_email@example.com"
     },
+    "slack_webhook_url": "your_slack_webhook_url",
     "subscriptions_file": "subscriptions.json",
-    "update_interval": 86400
+    "github_progress_frequency_days": 1,
+    "github_progress_execution_time":"08:00"
 }
+```
+**出于安全考虑:** GitHub Token 和 Email Password 的设置均支持使用环境变量进行配置，以避免明文配置重要信息，如下所示：
+
+```shell
+# Github
+export GITHUB_TOKEN="github_pat_xxx"
+# Email
+export EMAIL_PASSWORD="password"
 ```
 
 ### 3. 如何运行
@@ -52,25 +65,48 @@ python src/command_tool.py
 
 在此模式下，您可以手动输入命令来管理订阅、检索更新和生成报告。
 
-#### B. 作为后台进程运行（带调度器）
+#### B. 作为后台服务运行
 
-要将该应用作为后台服务（守护进程）运行，它将定期检查更新：
+要将该应用作为后台服务（守护进程）运行，它将根据相关配置定期自动更新。
 
-1. 确保您已安装 `python-daemon` 包：
+您可以直接使用守护进程管理脚本 [daemon_control.sh](daemon_control.sh) 来启动、查询状态、关闭和重启：
 
-    ```sh
-    pip install python-daemon
-    ```
-
-2. 启动后台进程：
+1. 启动服务：
 
     ```sh
-    nohup python3 src/daemon_process.py > logs/daemon_process.log 2>&1 &
+    $ ./daemon_control.sh start
+    Starting DaemonProcess...
+    DaemonProcess started.
     ```
 
-   - 这将启动后台调度器，按照 `config.json` 中指定的间隔定期检查更新。
-   - 日志将保存到 `logs/daemon_process.log` 文件中。
+   - 这将启动[./src/daemon_process.py]，按照 `config.json` 中设置的更新频率和时间点定期生成报告，并发送邮件。
+   - 本次服务日志将保存到 `logs/DaemonProcess.log` 文件中。同时，历史累计日志也将同步追加到 `logs/app.log` 日志文件中。
 
+2. 查询服务状态：
+
+    ```sh
+    $ ./daemon_control.sh status
+    DaemonProcess is running.
+    ```
+
+3. 关闭服务：
+
+    ```sh
+    $ ./daemon_control.sh stop
+    Stopping DaemonProcess...
+    DaemonProcess stopped.
+    ```
+
+4. 重启服务：
+
+    ```sh
+    $ ./daemon_control.sh restart
+    Stopping DaemonProcess...
+    DaemonProcess stopped.
+    Starting DaemonProcess...
+    DaemonProcess started.
+    ```
+    
 #### C. 作为 Gradio 服务器运行
 
 要使用 Gradio 界面运行应用，允许用户通过 Web 界面与该工具交互：
