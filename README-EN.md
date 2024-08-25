@@ -24,52 +24,90 @@ pip install -r requirements.txt
 
 ### 2. Configure the Application
 
-Edit the `config.json` file to set up your GitHub token, notification settings, subscription file, and update interval:
+Edit the `config.json` file to set up your GitHub token, Email settings(e.g.Tencent Exmail), subscription file, and update settings:
+
 
 ```json
 {
     "github_token": "your_github_token",
-    "notification_settings": {
-        "email": "your_email@example.com",
-        "slack_webhook_url": "your_slack_webhook_url"
+    "email":  {
+        "smtp_server": "smtp.exmail.qq.com",
+        "smtp_port": 465,
+        "from": "from_email@example.com",
+        "password": "your_email_password",
+        "to": "to_email@example.com"
     },
+    "slack_webhook_url": "your_slack_webhook_url",
     "subscriptions_file": "subscriptions.json",
-    "update_interval": 86400
+    "github_progress_frequency_days": 1,
+    "github_progress_execution_time":"08:00"
 }
+
+```
+**For security reasons:** It is recommended to configure the GitHub Token and Email Password using environment variables to avoid storing sensitive information in plain text, as shown below:
+
+```shell
+# GitHub
+export GITHUB_TOKEN="github_pat_xxx"
+# Email
+export EMAIL_PASSWORD="password"
 ```
 
 ### 3. How to Run
 
-GitHub Sentinel supports three different ways to run the application:
+GitHub Sentinel supports the following three modes of operation:
 
 #### A. Run as a Command-Line Tool
 
-You can run the application interactively from the command line:
+You can interactively run the application from the command line:
 
 ```sh
 python src/command_tool.py
 ```
 
-In this mode, you can manually input commands to manage subscriptions, retrieve updates, and generate reports.
+In this mode, you can manually enter commands to manage subscriptions, retrieve updates, and generate reports.
 
-#### B. Run as a Daemon Process with Scheduler
+#### B. Run as a Background Service
 
-To run the application as a background service (daemon) that regularly checks for updates:
+To run the application as a background service (daemon), it will automatically update according to the configured schedule.
 
-1. Ensure you have the `python-daemon` package installed:
+You can use the daemon management script [daemon_control.sh](daemon_control.sh) to start, check the status, stop, and restart:
 
-    ```sh
-    pip install python-daemon
-    ```
-
-2. Launch the daemon process:
+1. Start the service:
 
     ```sh
-    nohup python3 src/daemon_process.py > logs/daemon_process.log 2>&1 &
+    $ ./daemon_control.sh start
+    Starting DaemonProcess...
+    DaemonProcess started.
     ```
 
-   - This will start the scheduler in the background, checking for updates at the interval specified in your `config.json`.
-   - Logs will be saved to the `logs/daemon_process.log` file.
+   - This will launch [./src/daemon_process.py], generating reports periodically as set in `config.json`, and sending emails.
+   - Service logs will be saved to `logs/DaemonProcess.log`, with historical logs also appended to `logs/app.log`.
+
+2. Check the service status:
+
+    ```sh
+    $ ./daemon_control.sh status
+    DaemonProcess is running.
+    ```
+
+3. Stop the service:
+
+    ```sh
+    $ ./daemon_control.sh stop
+    Stopping DaemonProcess...
+    DaemonProcess stopped.
+    ```
+
+4. Restart the service:
+
+    ```sh
+    $ ./daemon_control.sh restart
+    Stopping DaemonProcess...
+    DaemonProcess stopped.
+    Starting DaemonProcess...
+    DaemonProcess started.
+    ```
 
 #### C. Run as a Gradio Server
 

@@ -10,8 +10,6 @@ class LLM:
         # 从TXT文件加载提示信息
         with open("prompts/report_prompt.txt", "r", encoding='utf-8') as file:
             self.system_prompt = file.read()
-        # 配置日志文件，当文件大小达到1MB时自动轮转，日志级别为DEBUG
-        LOG.add("logs/llm_logs.log", rotation="1 MB", level="DEBUG")
 
     def generate_daily_report(self, markdown_content, dry_run=False):
         # 使用从TXT文件加载的提示信息
@@ -26,11 +24,12 @@ class LLM:
             with open("daily_progress/prompt.txt", "w+") as f:
                 # 格式化JSON字符串的保存
                 json.dump(messages, f, indent=4, ensure_ascii=False)
-            LOG.debug("Prompt saved to daily_progress/prompt.txt")
+            LOG.debug("Prompt已保存到 daily_progress/prompt.txt")
+
             return "DRY RUN"
 
         # 日志记录开始生成报告
-        LOG.info("Starting report generation using GPT model.")
+        LOG.info("使用 GPT 模型开始生成报告。")
         
         try:
             # 调用OpenAI GPT模型生成报告
@@ -43,5 +42,5 @@ class LLM:
             return response.choices[0].message.content
         except Exception as e:
             # 如果在请求过程中出现异常，记录错误并抛出
-            LOG.error("An error occurred while generating the report: {}", e)
+            LOG.error(f"生成报告时发生错误：{e}")
             raise
