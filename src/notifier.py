@@ -39,6 +39,7 @@ if __name__ == '__main__':
     config = Config()
     notifier = Notifier(config.email)
 
+    test_repo = "DjangoPeng/openai-quickstart"
     test_report = """
 # DjangoPeng/openai-quickstart 项目进展
 
@@ -54,4 +55,4 @@ if __name__ == '__main__':
 - 关闭了一些未解决的问题。
 
 """
-    notifier.notify(test_report)
+    notifier.notify(test_repo, test_report)
