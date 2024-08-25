@@ -1,5 +1,4 @@
 [
-    "langchain-ai/langchain",
-    "DjangoPeng/openai-quickstart",
-    "ollama/ollama"
+    "ollama/ollama",
+    "vllm-project/vllm"
 ]

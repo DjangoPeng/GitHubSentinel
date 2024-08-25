@@ -20,6 +20,7 @@ class GitHubClient:
         return updates
 
     def fetch_commits(self, repo, since=None, until=None):
+        LOG.debug(f"准备获取 {repo} 的 Commits")
         url = f'https://api.github.com/repos/{repo}/commits'  # 构建获取提交的API URL
         params = {}
         if since:
@@ -27,33 +28,43 @@ class GitHubClient:
         if until:
             params['until'] = until  # 如果指定了结束日期，添加到参数中
 
-        response = requests.get(url, headers=self.headers, params=params)
-        response.raise_for_status()  # 检查请求是否成功
-        return response.json()  # 返回JSON格式的数据
+        try:
+            response = requests.get(url, headers=self.headers, params=params, timeout=10)
+            response.raise_for_status()  # 检查请求是否成功
+            return response.json()  # 返回JSON格式的数据
+        except Exception as e:
+            LOG.error(f"从 {repo} 获取 Commits 失败：{str(e)}")
+            LOG.error(f"响应详情：{response.text if 'response' in locals() else '无响应数据可用'}")
+            return []  # Handle failure case
 
     def fetch_issues(self, repo, since=None, until=None):
+        LOG.debug(f"准备获取 {repo} 的 Issues。")
         url = f'https://api.github.com/repos/{repo}/issues'  # 构建获取问题的API URL
-        params = {
-            'state': 'closed',  # 仅获取已关闭的问题
-            'since': since,
-            'until': until
-        }
-        response = requests.get(url, headers=self.headers, params=params)
-        response.raise_for_status()
-        return response.json()
+        params = {'state': 'closed', 'since': since, 'until': until}
+        try:
+            response = requests.get(url, headers=self.headers, params=params, timeout=10)
+            response.raise_for_status()
+            return response.json()
+        except Exception as e:
+            LOG.error(f"从 {repo} 获取 Issues 失败：{str(e)}")
+            LOG.error(f"响应详情：{response.text if 'response' in locals() else '无响应数据可用'}")
+            return []
 
     def fetch_pull_requests(self, repo, since=None, until=None):
+        LOG.debug(f"准备获取 {repo} 的 Pull Requests。")
         url = f'https://api.github.com/repos/{repo}/pulls'  # 构建获取拉取请求的API URL
-        params = {
-            'state': 'closed',  # 仅获取已合并的拉取请求
-            'since': since,
-            'until': until
-        }
-        response = requests.get(url, headers=self.headers, params=params)
-        response.raise_for_status()
-        return response.json()
+        params = {'state': 'closed', 'since': since, 'until': until}
+        try:
+            response = requests.get(url, headers=self.headers, params=params, timeout=10)
+            response.raise_for_status()  # 确保成功响应
+            return response.json()
+        except Exception as e:
+            LOG.error(f"从 {repo} 获取 Pull Requests 失败：{str(e)}")
+            LOG.error(f"响应详情：{response.text if 'response' in locals() else '无响应数据可用'}")
+            return []
 
     def export_daily_progress(self, repo):
+        LOG.debug(f"[准备导出项目进度]：{repo}")
         today = datetime.now().date().isoformat()  # 获取今天的日期
         updates = self.fetch_updates(repo, since=today)  # 获取今天的更新数据
         
@@ -67,7 +78,7 @@ class GitHubClient:
             for issue in updates['issues']:  # 写入今天关闭的问题
                 file.write(f"- {issue['title']} #{issue['number']}\n")
         
-        LOG.info(f"Exported daily progress to {file_path}")  # 记录日志
+        LOG.info(f"[{repo}]项目每日进展文件生成： {file_path}")  # 记录日志
         return file_path
 
     def export_progress_by_date_range(self, repo, days):
@@ -89,5 +100,5 @@ class GitHubClient:
             for issue in updates['issues']:  # 写入在指定日期内关闭的问题
                 file.write(f"- {issue['title']} #{issue['number']}\n")
         
-        LOG.info(f"Exported time-range progress to {file_path}")  # 记录日志
+        LOG.info(f"[{repo}]项目最新进展文件生成： {file_path}")  # 记录日志
         return file_path
