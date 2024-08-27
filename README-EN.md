@@ -125,5 +125,23 @@ To run the application with a Gradio interface, allowing users to interact with 
 python src/gradio_server.py
 ```
 
+![gradio_demo](images/gradio_demo.png)
+
 - This will start a web server on your machine, allowing you to manage subscriptions and generate reports through a user-friendly interface.
 - By default, the Gradio server will be accessible at `http://localhost:7860`, but you can share it publicly if needed.
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated. If you have any suggestions or feature requests, please open an issue first to discuss what you would like to change.
+
+<a href='https://github.com/repo-reviews/repo-reviews.github.io/blob/main/create.md' target="_blank"><img alt='Github' src='https://img.shields.io/badge/review_me-100000?style=flat&logo=Github&logoColor=white&labelColor=888888&color=555555'/></a>
+
+## License
+
+This project is licensed under the terms of the Apache-2.0 License . See the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+Django Peng - pjt73651@email.com
+
+Project Link: https://github.com/DjangoPeng/GitHubSentinel

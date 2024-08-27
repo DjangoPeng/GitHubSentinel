@@ -123,5 +123,24 @@ python src/command_tool.py
 python src/gradio_server.py
 ```
 
+![gradio_demo](images/gradio_demo.png)
+
 - 这将在您的机器上启动一个 Web 服务器，允许您通过用户友好的界面管理订阅和生成报告。
 - 默认情况下，Gradio 服务器将可在 `http://localhost:7860` 访问，但如果需要，您可以公开共享它。
+
+## 贡献
+
+贡献是使开源社区成为学习、激励和创造的惊人之处。非常感谢你所做的任何贡献。如果你有任何建议或功能请求，请先开启一个议题讨论你想要改变的内容。
+
+<a href='https://github.com/repo-reviews/repo-reviews.github.io/blob/main/create.md' target="_blank"><img alt='Github' src='https://img.shields.io/badge/review_me-100000?style=flat&logo=Github&logoColor=white&labelColor=888888&color=555555'/></a>
+
+## 许可证
+
+该项目根据Apache-2.0许可证的条款进行许可。详情请参见[LICENSE](LICENSE)文件。
+
+## 联系
+
+Django Peng - pjt73651@email.com
+
+项目链接: https://github.com/DjangoPeng/GitHubSentinel
+
