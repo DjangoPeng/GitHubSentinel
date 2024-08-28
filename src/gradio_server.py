@@ -10,7 +10,7 @@ from logger import LOG  # 导入日志记录器
 # 创建各个组件的实例
 config = Config()
 github_client = GitHubClient(config.github_token)
-llm = LLM()
+llm = LLM(config)  # 创建语言模型实例
 report_generator = ReportGenerator(llm)
 subscription_manager = SubscriptionManager(config.subscriptions_file)
 
