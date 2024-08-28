@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 ### 2. 配置应用
 
-编辑 `config.json` 文件，以设置您的 GitHub Token、Email 设置（以腾讯企微邮箱为例）、订阅文件和更新设置：
+编辑 `config.json` 文件，以设置您的 GitHub Token、Email 设置（以腾讯企微邮箱为例）、订阅文件、更新设置，以及大模型服务配置（支持 OpenAI GPT API 和 Ollama 私有化大模型服务）：
 
 ```json
 {
@@ -47,9 +47,16 @@ pip install -r requirements.txt
     "slack_webhook_url": "your_slack_webhook_url",
     "subscriptions_file": "subscriptions.json",
     "github_progress_frequency_days": 1,
-    "github_progress_execution_time":"08:00"
+    "github_progress_execution_time":"08:00",
+    "llm": {
+        "model_type": "openai",
+        "openai_model_name": "gpt-4o-mini",
+        "ollama_model_name": "llama3",
+        "ollama_api_url": "http://localhost:11434/api/chat"
+    }
 }
 ```
+
 **出于安全考虑:** GitHub Token 和 Email Password 的设置均支持使用环境变量进行配置，以避免明文配置重要信息，如下所示：
 
 ```shell
@@ -58,6 +65,12 @@ export GITHUB_TOKEN="github_pat_xxx"
 # Email
 export EMAIL_PASSWORD="password"
 ```
+
+#### Ollama 安装与配置
+
+
+[Ollama 安装部署与服务发布](docs/ollama.md)
+
 
 ### 3. 如何运行
 

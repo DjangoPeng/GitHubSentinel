@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 ### 2. Configure the Application
 
-Edit the `config.json` file to set up your GitHub token, Email settings(e.g.Tencent Exmail), subscription file, and update settings:
+Edit the `config.json` file to set up your GitHub token, Email settings(e.g.Tencent Exmail), subscription file, update settings and LLM settings(both support OpenAI GPT API and Ollama REST API so far):
 
 
 ```json
@@ -48,7 +48,13 @@ Edit the `config.json` file to set up your GitHub token, Email settings(e.g.Tenc
     "slack_webhook_url": "your_slack_webhook_url",
     "subscriptions_file": "subscriptions.json",
     "github_progress_frequency_days": 1,
-    "github_progress_execution_time":"08:00"
+    "github_progress_execution_time":"08:00",
+    "llm": {
+        "model_type": "openai",
+        "openai_model_name": "gpt-4o-mini",
+        "ollama_model_name": "llama3",
+        "ollama_api_url": "http://localhost:11434/api/chat"
+    }
 }
 
 ```
@@ -60,6 +66,10 @@ export GITHUB_TOKEN="github_pat_xxx"
 # Email
 export EMAIL_PASSWORD="password"
 ```
+
+#### Ollama: Installation and Deployment
+
+[Ollama Installation and Deployment](docs/ollama.md)
 
 ### 3. How to Run
 
