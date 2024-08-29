@@ -31,7 +31,12 @@ demo = gr.Interface(
         ),  # 下拉菜单选择订阅的GitHub项目
         gr.Slider(value=2, minimum=1, maximum=7, step=1, label="报告周期", info="生成项目过去一段时间进展，单位：天"),
         # 滑动条选择报告的时间范围
-    ],
+        gr.CheckboxGroup(
+            choices=["新增功能", "主要改进", "问题修复"],  # 选择项
+            label="选择类别",
+            value=["新增功能", "主要改进", "问题修复"],  # 默认全选
+            info="选择报告中要包括的内容"
+        )],
     outputs=[gr.Markdown(), gr.File(label="下载报告")],  # 输出格式：Markdown文本和文件下载
 )
 
