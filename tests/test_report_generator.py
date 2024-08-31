@@ -50,7 +50,7 @@ class TestReportGenerator(unittest.TestCase):
         """
         # 模拟 LLM 返回的报告内容
         mock_report = "This is a generated report."
-        self.mock_llm.generate_daily_report.return_value = mock_report
+        self.mock_llm.generate_report.return_value = mock_report  # 修改此行代码
 
         # 调用 generate_daily_report 方法
         report, report_file_path = self.report_generator.generate_daily_report(self.test_markdown_file_path)
@@ -64,8 +64,8 @@ class TestReportGenerator(unittest.TestCase):
             content = file.read()
             self.assertEqual(content, mock_report)
 
-        # 验证 LLM 的 generate_daily_report 方法是否被正确调用，且传入了正确的参数
-        self.mock_llm.generate_daily_report.assert_called_once_with(self.markdown_content)
+        # 验证 LLM 的 generate_report 方法是否被正确调用，且传入了正确的参数
+        self.mock_llm.generate_report.assert_called_once_with("github", self.markdown_content)
 
 if __name__ == '__main__':
     unittest.main()
