@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [GitHub Sentinel](#github-sentinel)
-- [Core Features](#core-features)
+- [Key Features](#key-features)
 - [Quick Start](#quick-start)
   - [1. Install Dependencies](#1-install-dependencies)
   - [2. Configure the Application](#2-configure-the-application)
@@ -40,15 +40,22 @@
     <br> <a href="README.md">中文</a> | English
 </p>
 
-GitHub Sentinel is an open-source tool AI agent designed for developers and project managers. It automatically retrieves and aggregates updates from subscribed GitHub repositories periodically (daily/weekly). Key features include subscription management, update retrieval, notification system, and report generation.
+GitHub Sentinel is an `AI Agent` designed for the era of large language models (LLMs), specializing in intelligent information retrieval and high-value content extraction. It is tailored for users with high-frequency and large-scale information needs, such as open-source enthusiasts, individual developers, and investors.
 
-## Core Features
+### Key Features
 
-- **Subscription Management**: Manage your subscription list of GitHub repositories.
-- **Update Retrieval**: Automatically retrieve and aggregate the latest updates from subscribed repositories, including commits, issues, and pull requests.
-- **Notification System**: Notify subscribers about the latest project progress via email.
-- **Report Generation**: Generate detailed project progress reports based on retrieved updates, supporting multiple formats and templates.
-- **Multi-Model Support**: Support natural language report generation through OpenAI and Ollama models.
+- **Subscription Management**: Easily manage and track your subscribed GitHub repositories.
+- **Update Retrieval**: Automatically fetch and aggregate the latest updates from your subscribed repositories, including commits, issues, and pull requests.
+- **Notification System**: Receive real-time notifications via email about the latest project progress.
+- **Report Generation**: Generate detailed project progress reports based on the retrieved updates, supporting various formats and templates to meet different needs.
+- **Multi-Model Support**: Leverage OpenAI and Ollama models to generate natural language project reports, offering more intelligent and accurate information services.
+- **Scheduled Tasks**: Supports scheduled tasks running as a daemon process, ensuring timely retrieval of updates.
+- **Graphical Interface**: Provides a simple and user-friendly GUI based on Gradio, making it accessible to a wider audience.
+- **Containerization**: The project supports Docker build and containerized deployment, allowing quick and easy setup in different environments.
+- **Continuous Integration**: Comprehensive unit tests are implemented, facilitating the configuration of production-level CI/CD pipelines to ensure project stability and high-quality delivery.
+
+GitHub Sentinel not only helps users automatically track and analyze the progress of `GitHub open-source projects` but also extends its capabilities to other information sources, such as trending topics on `Hacker News`, providing a more comprehensive approach to information extraction and analysis.
+
 
 ## Quick Start
 
