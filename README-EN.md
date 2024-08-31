@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [GitHub Sentinel](#github-sentinel)
-- [Features](#features)
+- [Core Features](#core-features)
 - [Quick Start](#quick-start)
   - [1. Install Dependencies](#1-install-dependencies)
   - [2. Configure the Application](#2-configure-the-application)
@@ -42,7 +42,7 @@
 
 GitHub Sentinel is an open-source tool AI agent designed for developers and project managers. It automatically retrieves and aggregates updates from subscribed GitHub repositories periodically (daily/weekly). Key features include subscription management, update retrieval, notification system, and report generation.
 
-## Features
+## Core Features
 
 - **Subscription Management**: Manage your subscription list of GitHub repositories.
 - **Update Retrieval**: Automatically retrieve and aggregate the latest updates from subscribed repositories, including commits, issues, and pull requests.
