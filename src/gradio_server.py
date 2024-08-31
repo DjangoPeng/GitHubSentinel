@@ -17,7 +17,7 @@ subscription_manager = SubscriptionManager(config.subscriptions_file)
 def export_progress_by_date_range(repo, days):
     # 定义一个函数，用于导出和生成指定时间范围内项目的进展报告
     raw_file_path = github_client.export_progress_by_date_range(repo, days)  # 导出原始数据文件路径
-    report, report_file_path = report_generator.generate_report_by_date_range(raw_file_path, days)  # 生成并获取报告内容及文件路径
+    report, report_file_path = report_generator.generate_daily_report(raw_file_path)  # 生成并获取报告内容及文件路径
 
     return report, report_file_path  # 返回报告内容和报告文件路径
 

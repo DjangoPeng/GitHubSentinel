@@ -1,5 +1,33 @@
 # GitHub Sentinel
 
+## Table of Contents
+
+- [GitHub Sentinel](#github-sentinel)
+- [Features](#features)
+- [Quick Start](#quick-start)
+  - [1. Install Dependencies](#1-install-dependencies)
+  - [2. Configure the Application](#2-configure-the-application)
+  - [3. How to Run](#3-how-to-run)
+    - [A. Run as a Command Line Tool](#a-run-as-a-command-line-tool)
+    - [B. Run as a Background Service](#b-run-as-a-background-service)
+    - [C. Run as a Gradio Server](#c-run-as-a-gradio-server)
+- [Ollama Installation and Service Deployment](#ollama-installation-and-service-deployment)
+- [Unit Testing](#unit-testing)
+  - [Unit Testing and Validation Script `validate_tests.sh`](#unit-testing-and-validation-script-validate_testssh)
+    - [Purpose](#purpose)
+    - [Functionality](#functionality)
+- [Building and Validating with Docker](#building-and-validating-with-docker)
+  - [1. `Dockerfile`](#1-dockerfile)
+    - [Purpose](#purpose)
+    - [Key Steps](#key-steps)
+  - [2. `build_image.sh`](#2-build_imagesh)
+    - [Purpose](#purpose)
+    - [Functionality](#functionality)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+
 ![GitHub stars](https://img.shields.io/github/stars/DjangoPeng/GitHubSentinel?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/DjangoPeng/GitHubSentinel?style=social)
 ![GitHub watchers](https://img.shields.io/github/watchers/DjangoPeng/GitHubSentinel?style=social)
@@ -9,18 +37,20 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/DjangoPeng/GitHubSentinel?color=red)
 
 <p align="center">
-    <br> English | <a href="README.md">中文</a>
+    <br> <a href="README.md">中文</a> | English
 </p>
 
-GitHub Sentinel is an open-source tool AI Agent designed for developers and project managers. It automatically retrieves and aggregates updates from subscribed GitHub repositories on a regular basis (daily/weekly). Key features include subscription management, update retrieval, notification system, and report generation.
+GitHub Sentinel is an open-source tool AI agent designed for developers and project managers. It automatically retrieves and aggregates updates from subscribed GitHub repositories periodically (daily/weekly). Key features include subscription management, update retrieval, notification system, and report generation.
 
 ## Features
-- Subscription management
-- Update retrieval
-- Notification system
-- Report generation
 
-## Getting Started
+- **Subscription Management**: Manage your subscription list of GitHub repositories.
+- **Update Retrieval**: Automatically retrieve and aggregate the latest updates from subscribed repositories, including commits, issues, and pull requests.
+- **Notification System**: Notify subscribers about the latest project progress via email.
+- **Report Generation**: Generate detailed project progress reports based on retrieved updates, supporting multiple formats and templates.
+- **Multi-Model Support**: Support natural language report generation through OpenAI and Ollama models.
+
+## Quick Start
 
 ### 1. Install Dependencies
 
@@ -32,12 +62,16 @@ pip install -r requirements.txt
 
 ### 2. Configure the Application
 
-Edit the `config.json` file to set up your GitHub token, Email settings(e.g.Tencent Exmail), subscription file, update settings and LLM settings(both support OpenAI GPT API and Ollama REST API so far):
-
+Edit the `config.json` file to set up your GitHub Token, Email settings (using Tencent WeCom Email as an example), subscription file, update settings, and large model service configurations (supporting OpenAI GPT API and Ollama private large model service):
 
 ```json
 {
-    "github_token": "your_github_token",
+    "github": {
+        "token": "your_github_token",
+        "subscriptions_file": "subscriptions.json",
+        "progress_frequency_days": 1,
+        "progress_execution_time": "08:00"
+    },
     "email":  {
         "smtp_server": "smtp.exmail.qq.com",
         "smtp_port": 465,
@@ -45,51 +79,47 @@ Edit the `config.json` file to set up your GitHub token, Email settings(e.g.Tenc
         "password": "your_email_password",
         "to": "to_email@example.com"
     },
-    "slack_webhook_url": "your_slack_webhook_url",
-    "subscriptions_file": "subscriptions.json",
-    "github_progress_frequency_days": 1,
-    "github_progress_execution_time":"08:00",
     "llm": {
-        "model_type": "openai",
+        "model_type": "ollama",
         "openai_model_name": "gpt-4o-mini",
         "ollama_model_name": "llama3",
         "ollama_api_url": "http://localhost:11434/api/chat"
+    },
+    "report_types": ["github"],
+    "slack": {
+        "webhook_url": "your_slack_webhook_url"
     }
 }
-
 ```
-**For security reasons:** It is recommended to configure the GitHub Token and Email Password using environment variables to avoid storing sensitive information in plain text, as shown below:
+
+**For security reasons:** The GitHub Token and Email Password settings support using environment variables to avoid configuring sensitive information in plain text, as shown below:
 
 ```shell
-# GitHub
+# Github
 export GITHUB_TOKEN="github_pat_xxx"
 # Email
 export EMAIL_PASSWORD="password"
 ```
 
-#### Ollama: Installation and Deployment
-
-[Ollama Installation and Deployment](docs/ollama.md)
-
 ### 3. How to Run
 
-GitHub Sentinel supports the following three modes of operation:
+GitHub Sentinel supports the following three running modes:
 
-#### A. Run as a Command-Line Tool
+#### A. Run as a Command Line Tool
 
-You can interactively run the application from the command line:
+You can run the application interactively from the command line:
 
 ```sh
 python src/command_tool.py
 ```
 
-In this mode, you can manually enter commands to manage subscriptions, retrieve updates, and generate reports.
+In this mode, you can manually input commands to manage subscriptions, retrieve updates, and generate reports.
 
 #### B. Run as a Background Service
 
-To run the application as a background service (daemon), it will automatically update according to the configured schedule.
+To run the application as a background service (daemon process), it will automatically update periodically according to the relevant configuration.
 
-You can use the daemon management script [daemon_control.sh](daemon_control.sh) to start, check the status, stop, and restart:
+You can directly use the daemon management script [daemon_control.sh](daemon_control.sh) to start, check the status, stop, and restart:
 
 1. Start the service:
 
@@ -99,8 +129,8 @@ You can use the daemon management script [daemon_control.sh](daemon_control.sh) 
     DaemonProcess started.
     ```
 
-   - This will launch [./src/daemon_process.py], generating reports periodically as set in `config.json`, and sending emails.
-   - Service logs will be saved to `logs/DaemonProcess.log`, with historical logs also appended to `logs/app.log`.
+   - This will start [./src/daemon_process.py], which will periodically generate reports and send emails according to the update frequency and time point set in `config.json`.
+   - The service log will be saved to the `logs/DaemonProcess.log` file. At the same time, historical cumulative logs will also be appended to the `logs/app.log` log file.
 
 2. Check the service status:
 
@@ -138,17 +168,110 @@ python src/gradio_server.py
 ![gradio_demo](images/gradio_demo.png)
 
 - This will start a web server on your machine, allowing you to manage subscriptions and generate reports through a user-friendly interface.
-- By default, the Gradio server will be accessible at `http://localhost:7860`, but you can share it publicly if needed.
+- By default, the Gradio server will be accessible at `http://localhost:7860`, but it can be shared publicly if needed.
+
+## Ollama Installation and Service Deployment
+
+Ollama is a private large model management tool that supports local and containerized deployment, command-line interaction, and REST API calls.
+
+For detailed instructions on Ollama installation and private large model service deployment, please refer to [Ollama Installation and Service Deployment](docs/ollama.md).
+
+### Ollama Brief Official Installation
+
+To use Ollama for calling private large model services in GitHub Sentinel, follow these steps for installation and configuration:
+
+1. **Install Ollama**:
+   Download and install the Ollama service according to the official Ollama documentation. Ollama supports multiple operating systems, including Linux, Windows, and macOS.
+
+2. **Start the Ollama Service**:
+   After installation, start the Ollama service with the following command:
+
+   ```bash
+   ollama serve
+   ```
+
+   By default, the Ollama API will run on `http://localhost:11434`.
+
+3. **Configure Ollama for Use in GitHub Sentinel**:
+   In the `config.json` file, configure the relevant information for the Ollama API:
+
+   ```json
+   {
+       "llm": {
+           "model_type": "ollama",
+           "ollama_model_name": "llama3",
+           "ollama_api_url": "http://localhost:11434/api/chat"
+       }
+   }
+   ```
+
+4. **Validate the Configuration**:
+   Start GitHub Sentinel and generate a report with the following command to verify that the Ollama configuration is correct:
+
+   ```bash
+   python src/command_tool.py
+   ```
+
+   If the configuration is correct, you will be able to generate reports using the Ollama model.
+
+## Unit Testing
+
+To ensure the quality and reliability of the code, GitHub Sentinel uses the `unittest` module for unit testing. For detailed explanations of `unittest` and related tools (such as `@patch` and `MagicMock`), please refer to [Detailed Unit Test Explanation](docs/unit_test.md).
+
+### Unit Testing and Validation Script `validate_tests.sh`
+
+#### Purpose
+`validate_tests.sh` is a shell script used to run unit tests and validate the results. It is executed during the Docker image build process to ensure the correctness and stability of the code.
+
+#### Functionality
+- The script runs all unit tests and outputs the results to the `test_results.txt` file.
+- If the tests fail, the script outputs the test results and causes the Docker build to fail.
+- If all tests pass, the script continues the build process.
+
+## Building and Validating with Docker
+
+To facilitate building and deploying the GitHub Sentinel project in various environments, we provide Docker support. This support
+
+ includes the following files and functionalities:
+
+### 1. `Dockerfile`
+
+#### Purpose
+The `Dockerfile` is a configuration file used to define how to build a Docker image. It describes the steps to build the image, including installing dependencies, copying project files, running unit tests, etc.
+
+#### Key Steps
+- Use `python:3.10-slim` as the base image and set the working directory to `/app`.
+- Copy the project's `requirements.txt` file and install Python dependencies.
+- Copy all project files to the container and grant execution permission to the `validate_tests.sh` script.
+- During the build process, execute the `validate_tests.sh` script to ensure that all unit tests pass. If the tests fail, the build process will be aborted.
+- After a successful build, the container will default to running `src/main.py` as the entry point.
+
+### 2. `build_image.sh`
+
+#### Purpose
+`build_image.sh` is a shell script used to automatically build a Docker image. It retrieves the branch name from the current Git branch and uses it as the tag for the Docker image, facilitating the generation of different Docker images on different branches.
+
+#### Functionality
+- Retrieve the current Git branch name and use it as the tag for the Docker image.
+- Use the `docker build` command to build the Docker image and tag it with the current Git branch name.
+
+#### Usage Example
+```bash
+chmod +x build_image.sh
+./build_image.sh
+```
+
+With these scripts and configuration files, you can ensure that Docker images built in different development branches are based on code that has passed unit tests, thereby improving code quality and deployment reliability.
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated. If you have any suggestions or feature requests, please open an issue first to discuss what you would like to change.
+Contributions make the open-source community a wonderful place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. If you have any suggestions or feature requests, please start an issue to discuss what you would like to change.
 
 <a href='https://github.com/repo-reviews/repo-reviews.github.io/blob/main/create.md' target="_blank"><img alt='Github' src='https://img.shields.io/badge/review_me-100000?style=flat&logo=Github&logoColor=white&labelColor=888888&color=555555'/></a>
 
 ## License
 
-This project is licensed under the terms of the Apache-2.0 License . See the [LICENSE](LICENSE) file for details.
+This project is licensed under the terms of the Apache-2.0 License. See the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
