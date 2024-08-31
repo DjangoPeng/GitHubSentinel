@@ -79,7 +79,7 @@ class LLM:
         :param messages: 包含系统提示和用户内容的消息列表。
         :return: 生成的报告内容。
         """
-        LOG.info("使用 Ollama LLaMA 模型开始生成报告。")
+        LOG.info("使用 Ollama 托管模型服务开始生成报告。")
         try:
             payload = {
                 "model": self.config.ollama_model_name,  # 使用配置中的Ollama模型名称
