@@ -166,3 +166,4 @@ daily_progress/*
 src/jupyter/*.md
 src/jupyter/daily_progress/*
 run/*
+test_results.txt

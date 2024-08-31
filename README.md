@@ -1,5 +1,33 @@
 # GitHub Sentinel
 
+## 目录
+
+- [GitHub Sentinel](#github-sentinel)
+- [功能](#功能)
+- [快速开始](#快速开始)
+  - [1. 安装依赖](#1-安装依赖)
+  - [2. 配置应用](#2-配置应用)
+  - [3. 如何运行](#3-如何运行)
+    - [A. 作为命令行工具运行](#a-作为命令行工具运行)
+    - [B. 作为后台服务运行](#b-作为后台服务运行)
+    - [C. 作为 Gradio 服务器运行](#c-作为-gradio-服务器运行)
+- [Ollama 安装与服务发布](#Ollama-安装与服务发布)
+- [单元测试](#单元测试)
+  - [单元测试和验证脚本 `validate_tests.sh`](#单元测试和验证脚本-validate_testssh)
+    - [用途](#用途)
+    - [功能](#功能)
+- [使用 Docker 构建与验证](#使用-docker-构建与验证)
+  - [1. `Dockerfile`](#1-dockerfile)
+    - [用途](#用途)
+    - [关键步骤](#关键步骤)
+  - [2. `build_image.sh`](#2-build_imagesh)
+    - [用途](#用途)
+    - [功能](#功能)
+- [贡献](#贡献)
+- [许可证](#许可证)
+- [联系](#联系)
+
+
 ![GitHub stars](https://img.shields.io/github/stars/DjangoPeng/GitHubSentinel?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/DjangoPeng/GitHubSentinel?style=social)
 ![GitHub watchers](https://img.shields.io/github/watchers/DjangoPeng/GitHubSentinel?style=social)
@@ -15,10 +43,12 @@
 GitHub Sentinel 是一个开源的工具 AI 代理，专为开发人员和项目经理设计。它会定期（每日/每周）自动从订阅的 GitHub 仓库中检索和汇总更新。主要功能包括订阅管理、更新检索、通知系统和报告生成。
 
 ## 功能
-- 订阅管理
-- 更新检索
-- 通知系统
-- 报告生成
+
+- **订阅管理**：管理您关注的 GitHub 仓库的订阅列表。
+- **更新检索**：自动检索和汇总订阅仓库的最新更新，包括提交、问题和拉取请求。
+- **通知系统**：通过电子邮件通知订阅者有关项目进展的最新情况。
+- **报告生成**：基于检索到的更新生成详细的项目进展报告，支持多种格式和模板。
+- **多模型支持**：支持通过 OpenAI 和 Ollama 模型生成自然语言报告。
 
 ## 快速开始
 
@@ -36,7 +66,12 @@ pip install -r requirements.txt
 
 ```json
 {
-    "github_token": "your_github_token",
+    "github": {
+        "token": "your_github_token",
+        "subscriptions_file": "subscriptions.json",
+        "progress_frequency_days": 1,
+        "progress_execution_time": "08:00"
+    },
     "email":  {
         "smtp_server": "smtp.exmail.qq.com",
         "smtp_port": 465,
@@ -44,15 +79,15 @@ pip install -r requirements.txt
         "password": "your_email_password",
         "to": "to_email@example.com"
     },
-    "slack_webhook_url": "your_slack_webhook_url",
-    "subscriptions_file": "subscriptions.json",
-    "github_progress_frequency_days": 1,
-    "github_progress_execution_time":"08:00",
     "llm": {
-        "model_type": "openai",
+        "model_type": "ollama",
         "openai_model_name": "gpt-4o-mini",
         "ollama_model_name": "llama3",
         "ollama_api_url": "http://localhost:11434/api/chat"
+    },
+    "report_types": ["github"],
+    "slack": {
+        "webhook_url": "your_slack_webhook_url"
     }
 }
 ```
@@ -65,11 +100,6 @@ export GITHUB_TOKEN="github_pat_xxx"
 # Email
 export EMAIL_PASSWORD="password"
 ```
-
-#### Ollama 安装与配置
-
-
-[Ollama 安装部署与服务发布](docs/ollama.md)
 
 
 ### 3. 如何运行
@@ -127,7 +157,7 @@ python src/command_tool.py
     Starting DaemonProcess...
     DaemonProcess started.
     ```
-    
+
 #### C. 作为 Gradio 服务器运行
 
 要使用 Gradio 界面运行应用，允许用户通过 Web 界面与该工具交互：
@@ -141,6 +171,101 @@ python src/gradio_server.py
 - 这将在您的机器上启动一个 Web 服务器，允许您通过用户友好的界面管理订阅和生成报告。
 - 默认情况下，Gradio 服务器将可在 `http://localhost:7860` 访问，但如果需要，您可以公开共享它。
 
+
+## Ollama 安装与服务发布
+
+Ollama 是一个私有化大模型管理工具，支持本地和容器化部署，命令行交互和 REST API 调用。
+
+关于 Ollama 安装部署与私有化大模型服务发布的详细说明，请参考[Ollama 安装部署与服务发布](docs/ollama.md)。
+
+### Ollama 简要官方安装
+
+要在 GitHub Sentinel 中使用 Ollama 调用私有化大模型服务，请按照以下步骤进行安装和配置：
+
+1. **安装 Ollama**：
+   请根据 Ollama 的官方文档下载并安装 Ollama 服务。Ollama 支持多种操作系统，包括 Linux、Windows 和 macOS。
+
+2. **启动 Ollama 服务**：
+   安装完成后，通过以下命令启动 Ollama 服务：
+
+   ```bash
+   ollama serve
+   ```
+
+   默认情况下，Ollama API 将在 `http://localhost:11434` 运行。
+
+3. **配置 Ollama 在 GitHub Sentinel 中使用**：
+   在 `config.json` 文件中，配置 Ollama API 的相关信息：
+
+   ```json
+   {
+       "llm": {
+           "model_type": "ollama",
+           "ollama_model_name": "llama3",
+           "ollama_api_url": "http://localhost:11434/api/chat"
+       }
+   }
+   ```
+
+4. **验证配置**：
+   使用以下命令启动 GitHub Sentinel 并生成报告，以验证 Ollama 配置是否正确：
+
+   ```bash
+   python src/command_tool.py
+   ```
+
+   如果配置正确，您将能够通过 Ollama 模型生成报告。
+
+
+
+## 单元测试
+
+为了确保代码的质量和可靠性，GitHub Sentinel 使用了 `unittest` 模块进行单元测试。关于 `unittest` 及其相关工具（如 `@patch` 和 `MagicMock`）的详细说明，请参考 [单元测试详细说明](docs/unit_test.md)。
+
+### 单元测试和验证脚本 `validate_tests.sh`
+
+#### 用途
+`validate_tests.sh` 是一个用于运行单元测试并验证结果的 Shell 脚本。它在 Docker 镜像构建过程中被执行，以确保代码的正确性和稳定性。
+
+#### 功能
+- 脚本运行所有单元测试，并将结果输出到 `test_results.txt` 文件中。
+- 如果测试失败，脚本会输出测试结果并导致 Docker 构建失败。
+- 如果所有测试通过，脚本会继续构建过程。
+
+
+## 使用 Docker 构建与验证
+
+为了便于在各种环境中构建和部署 GitHub Sentinel 项目，我们提供了 Docker 支持。该支持包括以下文件和功能：
+
+### 1. `Dockerfile`
+
+#### 用途
+`Dockerfile` 是用于定义如何构建 Docker 镜像的配置文件。它描述了镜像的构建步骤，包括安装依赖、复制项目文件、运行单元测试等。
+
+#### 关键步骤
+- 使用 `python:3.10-slim` 作为基础镜像，并设置工作目录为 `/app`。
+- 复制项目的 `requirements.txt` 文件并安装 Python 依赖。
+- 复制项目的所有文件到容器，并赋予 `validate_tests.sh` 脚本执行权限。
+- 在构建过程中执行 `validate_tests.sh` 脚本，以确保所有单元测试通过。如果测试失败，构建过程将中止。
+- 构建成功后，将默认运行 `src/main.py` 作为容器的入口点。
+
+### 2. `build_image.sh`
+
+#### 用途
+`build_image.sh` 是一个用于自动构建 Docker 镜像的 Shell 脚本。它从当前的 Git 分支获取分支名称，并将其用作 Docker 镜像的标签，便于在不同分支上生成不同的 Docker 镜像。
+
+#### 功能
+- 获取当前的 Git 分支名称，并将其用作 Docker 镜像的标签。
+- 使用 `docker build` 命令构建 Docker 镜像，并使用当前 Git 分支名称作为标签。
+
+#### 使用示例
+```bash
+chmod +x build_image.sh
+./build_image.sh
+```
+
+通过这些脚本和配置文件，确保在不同的开发分支中，构建的 Docker 镜像都是基于通过单元测试的代码，从而提高了代码质量和部署的可靠性。
+
 ## 贡献
 
 贡献是使开源社区成为学习、激励和创造的惊人之处。非常感谢你所做的任何贡献。如果你有任何建议或功能请求，请先开启一个议题讨论你想要改变的内容。
@@ -149,11 +274,10 @@ python src/gradio_server.py
 
 ## 许可证
 
-该项目根据Apache-2.0许可证的条款进行许可。详情请参见[LICENSE](LICENSE)文件。
+该项目根据 Apache-2.0 许可证的条款进行许可。详情请参见 [LICENSE](LICENSE) 文件。
 
 ## 联系
 
 Django Peng - pjt73651@email.com
 
 项目链接: https://github.com/DjangoPeng/GitHubSentinel
-

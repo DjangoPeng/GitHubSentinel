@@ -1,7 +1,6 @@
-# src/logger.py
-
 from loguru import logger
 import sys
+import logging
 
 # 定义统一的日志格式字符串
 log_format = "{time:YYYY-MM-DD HH:mm:ss} | {level} | {module}:{function}:{line} - {message}"
@@ -16,8 +15,8 @@ logger.add(sys.stderr, level="ERROR", format=log_format, colorize=True)
 # 同样使用统一的格式配置日志文件输出，设置文件大小为1MB自动轮换
 logger.add("logs/app.log", rotation="1 MB", level="DEBUG", format=log_format)
 
-# 为logger设置别名，方便在其他模块中导入和使用
+# 为 logger 设置别名，方便在其他模块中导入和使用
 LOG = logger
 
-# 将LOG变量公开，允许其他模块通过from logger import LOG来使用它
+# 将 LOG 变量公开，允许其他模块通过 from logger import LOG 来使用它
 __all__ = ["LOG"]
