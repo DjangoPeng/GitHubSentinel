@@ -10,5 +10,11 @@
     "slack_webhook_url": "your_slack_webhook_url",
     "subscriptions_file": "subscriptions.json",
     "github_progress_frequency_days": 1,
-    "github_progress_execution_time":"08:00"
+    "github_progress_execution_time":"08:00",
+    "llm": {
+        "model_type": "ollama",
+        "openai_model_name": "gpt-4o-mini",
+        "ollama_model_name": "llama3",
+        "ollama_api_url": "http://localhost:11434/api/chat"
+    }
 }

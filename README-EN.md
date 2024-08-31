@@ -1,5 +1,13 @@
 # GitHub Sentinel
 
+![GitHub stars](https://img.shields.io/github/stars/DjangoPeng/GitHubSentinel?style=social)
+![GitHub forks](https://img.shields.io/github/forks/DjangoPeng/GitHubSentinel?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/DjangoPeng/GitHubSentinel?style=social)
+![GitHub repo size](https://img.shields.io/github/repo-size/DjangoPeng/GitHubSentinel)
+![GitHub language count](https://img.shields.io/github/languages/count/DjangoPeng/GitHubSentinel)
+![GitHub top language](https://img.shields.io/github/languages/top/DjangoPeng/GitHubSentinel)
+![GitHub last commit](https://img.shields.io/github/last-commit/DjangoPeng/GitHubSentinel?color=red)
+
 <p align="center">
     <br> English | <a href="README.md">中文</a>
 </p>
@@ -24,7 +32,7 @@ pip install -r requirements.txt
 
 ### 2. Configure the Application
 
-Edit the `config.json` file to set up your GitHub token, Email settings(e.g.Tencent Exmail), subscription file, and update settings:
+Edit the `config.json` file to set up your GitHub token, Email settings(e.g.Tencent Exmail), subscription file, update settings and LLM settings(both support OpenAI GPT API and Ollama REST API so far):
 
 
 ```json
@@ -40,7 +48,13 @@ Edit the `config.json` file to set up your GitHub token, Email settings(e.g.Tenc
     "slack_webhook_url": "your_slack_webhook_url",
     "subscriptions_file": "subscriptions.json",
     "github_progress_frequency_days": 1,
-    "github_progress_execution_time":"08:00"
+    "github_progress_execution_time":"08:00",
+    "llm": {
+        "model_type": "openai",
+        "openai_model_name": "gpt-4o-mini",
+        "ollama_model_name": "llama3",
+        "ollama_api_url": "http://localhost:11434/api/chat"
+    }
 }
 
 ```
@@ -52,6 +66,10 @@ export GITHUB_TOKEN="github_pat_xxx"
 # Email
 export EMAIL_PASSWORD="password"
 ```
+
+#### Ollama: Installation and Deployment
+
+[Ollama Installation and Deployment](docs/ollama.md)
 
 ### 3. How to Run
 
@@ -117,5 +135,23 @@ To run the application with a Gradio interface, allowing users to interact with 
 python src/gradio_server.py
 ```
 
+![gradio_demo](images/gradio_demo.png)
+
 - This will start a web server on your machine, allowing you to manage subscriptions and generate reports through a user-friendly interface.
 - By default, the Gradio server will be accessible at `http://localhost:7860`, but you can share it publicly if needed.
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated. If you have any suggestions or feature requests, please open an issue first to discuss what you would like to change.
+
+<a href='https://github.com/repo-reviews/repo-reviews.github.io/blob/main/create.md' target="_blank"><img alt='Github' src='https://img.shields.io/badge/review_me-100000?style=flat&logo=Github&logoColor=white&labelColor=888888&color=555555'/></a>
+
+## License
+
+This project is licensed under the terms of the Apache-2.0 License . See the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+Django Peng - pjt73651@email.com
+
+Project Link: https://github.com/DjangoPeng/GitHubSentinel
