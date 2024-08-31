@@ -1,9 +1,21 @@
 # GitHub Sentinel
 
+![GitHub stars](https://img.shields.io/github/stars/DjangoPeng/GitHubSentinel?style=social)
+![GitHub forks](https://img.shields.io/github/forks/DjangoPeng/GitHubSentinel?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/DjangoPeng/GitHubSentinel?style=social)
+![GitHub repo size](https://img.shields.io/github/repo-size/DjangoPeng/GitHubSentinel)
+![GitHub language count](https://img.shields.io/github/languages/count/DjangoPeng/GitHubSentinel)
+![GitHub top language](https://img.shields.io/github/languages/top/DjangoPeng/GitHubSentinel)
+![GitHub last commit](https://img.shields.io/github/last-commit/DjangoPeng/GitHubSentinel?color=red)
+
+<p align="center">
+    <br> <a href="README.md">中文</a> | English
+</p>
+
 ## Table of Contents
 
 - [GitHub Sentinel](#github-sentinel)
-- [Features](#features)
+- [Key Features](#key-features)
 - [Quick Start](#quick-start)
   - [1. Install Dependencies](#1-install-dependencies)
   - [2. Configure the Application](#2-configure-the-application)
@@ -28,27 +40,22 @@
 - [Contact](#contact)
 
 
-![GitHub stars](https://img.shields.io/github/stars/DjangoPeng/GitHubSentinel?style=social)
-![GitHub forks](https://img.shields.io/github/forks/DjangoPeng/GitHubSentinel?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/DjangoPeng/GitHubSentinel?style=social)
-![GitHub repo size](https://img.shields.io/github/repo-size/DjangoPeng/GitHubSentinel)
-![GitHub language count](https://img.shields.io/github/languages/count/DjangoPeng/GitHubSentinel)
-![GitHub top language](https://img.shields.io/github/languages/top/DjangoPeng/GitHubSentinel)
-![GitHub last commit](https://img.shields.io/github/last-commit/DjangoPeng/GitHubSentinel?color=red)
+GitHub Sentinel is an `AI Agent` designed for the era of large language models (LLMs), specializing in intelligent information retrieval and high-value content extraction. It is tailored for users with high-frequency and large-scale information needs, such as open-source enthusiasts, individual developers, and investors.
 
-<p align="center">
-    <br> <a href="README.md">中文</a> | English
-</p>
+### Key Features
 
-GitHub Sentinel is an open-source tool AI agent designed for developers and project managers. It automatically retrieves and aggregates updates from subscribed GitHub repositories periodically (daily/weekly). Key features include subscription management, update retrieval, notification system, and report generation.
+- **Subscription Management**: Easily manage and track your subscribed GitHub repositories.
+- **Update Retrieval**: Automatically fetch and aggregate the latest updates from your subscribed repositories, including commits, issues, and pull requests.
+- **Notification System**: Receive real-time notifications via email about the latest project progress.
+- **Report Generation**: Generate detailed project progress reports based on the retrieved updates, supporting various formats and templates to meet different needs.
+- **Multi-Model Support**: Leverage OpenAI and Ollama models to generate natural language project reports, offering more intelligent and accurate information services.
+- **Scheduled Tasks**: Supports scheduled tasks running as a daemon process, ensuring timely retrieval of updates.
+- **Graphical Interface**: Provides a simple and user-friendly GUI based on Gradio, making it accessible to a wider audience.
+- **Containerization**: The project supports Docker build and containerized deployment, allowing quick and easy setup in different environments.
+- **Continuous Integration**: Comprehensive unit tests are implemented, facilitating the configuration of production-level CI/CD pipelines to ensure project stability and high-quality delivery.
 
-## Features
+GitHub Sentinel not only helps users automatically track and analyze the progress of `GitHub open-source projects` but also extends its capabilities to other information sources, such as trending topics on `Hacker News`, providing a more comprehensive approach to information extraction and analysis.
 
-- **Subscription Management**: Manage your subscription list of GitHub repositories.
-- **Update Retrieval**: Automatically retrieve and aggregate the latest updates from subscribed repositories, including commits, issues, and pull requests.
-- **Notification System**: Notify subscribers about the latest project progress via email.
-- **Report Generation**: Generate detailed project progress reports based on retrieved updates, supporting multiple formats and templates.
-- **Multi-Model Support**: Support natural language report generation through OpenAI and Ollama models.
 
 ## Quick Start
 
@@ -260,6 +267,8 @@ The `Dockerfile` is a configuration file used to define how to build a Docker im
 chmod +x build_image.sh
 ./build_image.sh
 ```
+
+![build_docker_image](images/build_docker_image.jpg)
 
 With these scripts and configuration files, you can ensure that Docker images built in different development branches are based on code that has passed unit tests, thereby improving code quality and deployment reliability.
 

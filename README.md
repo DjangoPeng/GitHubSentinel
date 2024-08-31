@@ -1,9 +1,21 @@
 # GitHub Sentinel
 
+![GitHub stars](https://img.shields.io/github/stars/DjangoPeng/GitHubSentinel?style=social)
+![GitHub forks](https://img.shields.io/github/forks/DjangoPeng/GitHubSentinel?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/DjangoPeng/GitHubSentinel?style=social)
+![GitHub repo size](https://img.shields.io/github/repo-size/DjangoPeng/GitHubSentinel)
+![GitHub language count](https://img.shields.io/github/languages/count/DjangoPeng/GitHubSentinel)
+![GitHub top language](https://img.shields.io/github/languages/top/DjangoPeng/GitHubSentinel)
+![GitHub last commit](https://img.shields.io/github/last-commit/DjangoPeng/GitHubSentinel?color=red)
+
+<p align="center">
+    <br> <a href="README-EN.md">English</a> | 中文
+</p>
+
 ## 目录
 
 - [GitHub Sentinel](#github-sentinel)
-- [功能](#功能)
+- [主要功能](#主要功能)
 - [快速开始](#快速开始)
   - [1. 安装依赖](#1-安装依赖)
   - [2. 配置应用](#2-配置应用)
@@ -28,27 +40,24 @@
 - [联系](#联系)
 
 
-![GitHub stars](https://img.shields.io/github/stars/DjangoPeng/GitHubSentinel?style=social)
-![GitHub forks](https://img.shields.io/github/forks/DjangoPeng/GitHubSentinel?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/DjangoPeng/GitHubSentinel?style=social)
-![GitHub repo size](https://img.shields.io/github/repo-size/DjangoPeng/GitHubSentinel)
-![GitHub language count](https://img.shields.io/github/languages/count/DjangoPeng/GitHubSentinel)
-![GitHub top language](https://img.shields.io/github/languages/top/DjangoPeng/GitHubSentinel)
-![GitHub last commit](https://img.shields.io/github/last-commit/DjangoPeng/GitHubSentinel?color=red)
 
-<p align="center">
-    <br> <a href="README-EN.md">English</a> | 中文
-</p>
+GitHub Sentinel 是专为大模型（LLMs）时代打造的智能信息检索和高价值内容挖掘 `AI Agent`。它面向那些需要高频次、大量信息获取的用户，特别是开源爱好者、个人开发者和投资人等。
 
-GitHub Sentinel 是一个开源的工具 AI 代理，专为开发人员和项目经理设计。它会定期（每日/每周）自动从订阅的 GitHub 仓库中检索和汇总更新。主要功能包括订阅管理、更新检索、通知系统和报告生成。
 
-## 功能
+### 主要功能
 
-- **订阅管理**：管理您关注的 GitHub 仓库的订阅列表。
-- **更新检索**：自动检索和汇总订阅仓库的最新更新，包括提交、问题和拉取请求。
-- **通知系统**：通过电子邮件通知订阅者有关项目进展的最新情况。
-- **报告生成**：基于检索到的更新生成详细的项目进展报告，支持多种格式和模板。
-- **多模型支持**：支持通过 OpenAI 和 Ollama 模型生成自然语言报告。
+- **订阅管理**：轻松管理和跟踪您关注的 GitHub 仓库。
+- **更新检索**：自动检索并汇总订阅仓库的最新动态，包括提交记录、问题和拉取请求。
+- **通知系统**：通过电子邮件等方式，实时通知订阅者项目的最新进展。
+- **报告生成**：基于检索到的更新生成详细的项目进展报告，支持多种格式和模板，满足不同需求。
+- **多模型支持**：结合 OpenAI 和 Ollama 模型，生成自然语言项目报告，提供更智能、精准的信息服务。
+- **定时任务**：支持以守护进程方式执行定时任务，确保信息更新及时获取。
+- **图形化界面**：基于 Gradio 实现了简单易用的 GUI 操作模式，降低使用门槛。
+- **容器化**：项目支持 Docker 构建和容器化部署，便于在不同环境中快速部署和运行。
+- **持续集成**：实现了完备的单元测试，便于进一步配置生产级 CI/CD 流程，确保项目的稳定性和高质量交付。
+
+GitHub Sentinel 不仅能帮助用户自动跟踪和分析 `GitHub 开源项目` 的最新动态，还能快速扩展到其他信息渠道，如 `Hacker News` 的热门话题，提供更全面的信息挖掘与分析能力。
+
 
 ## 快速开始
 
@@ -263,6 +272,8 @@ Ollama 是一个私有化大模型管理工具，支持本地和容器化部署�
 chmod +x build_image.sh
 ./build_image.sh
 ```
+
+![build_docker_image](images/build_docker_image.jpg)
 
 通过这些脚本和配置文件，确保在不同的开发分支中，构建的 Docker 镜像都是基于通过单元测试的代码，从而提高了代码质量和部署的可靠性。
 
