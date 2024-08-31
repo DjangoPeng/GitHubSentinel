@@ -163,6 +163,7 @@ cython_debug/
 
 # User-defined
 daily_progress/*
+hacker_news/*
 src/jupyter/*.md
 src/jupyter/daily_progress/*
 run/*
