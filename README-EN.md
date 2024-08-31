@@ -268,6 +268,8 @@ chmod +x build_image.sh
 ./build_image.sh
 ```
 
+![build_docker_image](images/build_docker_image.jpg)
+
 With these scripts and configuration files, you can ensure that Docker images built in different development branches are based on code that has passed unit tests, thereby improving code quality and deployment reliability.
 
 ## Contributing

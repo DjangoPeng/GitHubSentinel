@@ -273,6 +273,8 @@ chmod +x build_image.sh
 ./build_image.sh
 ```
 
+![build_docker_image](images/build_docker_image.jpg)
+
 通过这些脚本和配置文件，确保在不同的开发分支中，构建的 Docker 镜像都是基于通过单元测试的代码，从而提高了代码质量和部署的可靠性。
 
 ## 贡献
