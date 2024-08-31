@@ -1,5 +1,17 @@
 # GitHub Sentinel
 
+![GitHub stars](https://img.shields.io/github/stars/DjangoPeng/GitHubSentinel?style=social)
+![GitHub forks](https://img.shields.io/github/forks/DjangoPeng/GitHubSentinel?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/DjangoPeng/GitHubSentinel?style=social)
+![GitHub repo size](https://img.shields.io/github/repo-size/DjangoPeng/GitHubSentinel)
+![GitHub language count](https://img.shields.io/github/languages/count/DjangoPeng/GitHubSentinel)
+![GitHub top language](https://img.shields.io/github/languages/top/DjangoPeng/GitHubSentinel)
+![GitHub last commit](https://img.shields.io/github/last-commit/DjangoPeng/GitHubSentinel?color=red)
+
+<p align="center">
+    <br> <a href="README-EN.md">English</a> | 中文
+</p>
+
 ## 目录
 
 - [GitHub Sentinel](#github-sentinel)
@@ -28,17 +40,6 @@
 - [联系](#联系)
 
 
-![GitHub stars](https://img.shields.io/github/stars/DjangoPeng/GitHubSentinel?style=social)
-![GitHub forks](https://img.shields.io/github/forks/DjangoPeng/GitHubSentinel?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/DjangoPeng/GitHubSentinel?style=social)
-![GitHub repo size](https://img.shields.io/github/repo-size/DjangoPeng/GitHubSentinel)
-![GitHub language count](https://img.shields.io/github/languages/count/DjangoPeng/GitHubSentinel)
-![GitHub top language](https://img.shields.io/github/languages/top/DjangoPeng/GitHubSentinel)
-![GitHub last commit](https://img.shields.io/github/last-commit/DjangoPeng/GitHubSentinel?color=red)
-
-<p align="center">
-    <br> <a href="README-EN.md">English</a> | 中文
-</p>
 
 GitHub Sentinel 是专为大模型（LLMs）时代打造的智能信息检索和高价值内容挖掘 `AI Agent`。它面向那些需要高频次、大量信息获取的用户，特别是开源爱好者、个人开发者和投资人等。
 
