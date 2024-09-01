@@ -168,3 +168,5 @@ src/jupyter/*.md
 src/jupyter/daily_progress/*
 run/*
 test_results.txt
+prompts/*_bak.txt
+nohup.out
