@@ -2,8 +2,6 @@ import sys
 import os
 import unittest
 from unittest.mock import patch, MagicMock
-from loguru import logger
-from io import StringIO
 
 # 将 src 目录添加到模块搜索路径，方便导入项目中的模块
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
@@ -18,6 +16,9 @@ class TestLLM(unittest.TestCase):
         """
         self.config = Config()  # 初始化配置对象
         self.llm = LLM(self.config)  # 使用配置对象初始化 LLM 实例
+
+        # 设置示例的系统提示信息
+        self.system_prompt = "Your specific system prompt for GitHub report generation"
 
         # 准备用于测试的 GitHub 内容字符串
         self.github_content = """
@@ -39,26 +40,6 @@ class TestLLM(unittest.TestCase):
             llm = LLM(self.config)
         mock_log_error.assert_called_with("不支持的模型类型: invalid_model")
 
-    @patch('llm.LOG.error')
-    def test_missing_prompt_file(self, mock_log_error):
-        """
-        测试提示文件缺失时的错误处理路径。
-        """
-        self.config.report_types = ["missing_prompt_type"]
-        with self.assertRaises(FileNotFoundError):
-            llm = LLM(self.config)
-        prompt_file = f"prompts/missing_prompt_type_{self.config.llm_model_type.lower()}_prompt.txt"
-        mock_log_error.assert_called_with(f"提示文件不存在: {prompt_file}")
-
-    @patch('llm.LOG.error')
-    def test_invalid_report_type(self, mock_log_error):
-        """
-        测试无效的报告类型时的错误处理路径。
-        """
-        with self.assertRaises(ValueError):
-            self.llm.generate_report("invalid_report_type", self.github_content)
-        mock_log_error.assert_called_with("无效的报告类型: invalid_report_type")
-
     @patch('llm.requests.post')
     @patch('llm.LOG.error')
     def test_ollama_invalid_response_structure(self, mock_log_error, mock_post):
@@ -71,7 +52,7 @@ class TestLLM(unittest.TestCase):
         mock_post.return_value = mock_response
 
         with self.assertRaises(ValueError):
-            self.llm.generate_report("github", self.github_content)
+            self.llm.generate_report(self.system_prompt, self.github_content)
         mock_log_error.assert_called_with("生成报告时发生错误：Ollama API 返回的响应结构无效")
 
 
@@ -89,7 +70,7 @@ class TestLLM(unittest.TestCase):
         mock_openai().chat.completions.create.side_effect = Exception("OpenAI API error")
         
         with self.assertRaises(Exception):
-            self.llm.generate_report("github", self.github_content)
+            self.llm.generate_report(self.system_prompt, self.github_content)
         
         # 检查是否记录了预期的错误日志
         mock_log_error.assert_called_with("生成报告时发生错误：OpenAI API error")
