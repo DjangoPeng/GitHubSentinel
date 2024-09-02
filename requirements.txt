@@ -4,3 +4,5 @@ gradio
 loguru
 schedule
 markdown2
+selenium
+webdriver-manager

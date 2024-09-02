@@ -1,23 +1,40 @@
-import requests  # 导入requests库用于HTTP请求
-from bs4 import BeautifulSoup  # 导入BeautifulSoup库用于解析HTML内容
-from datetime import datetime  # 导入datetime模块用于获取日期和时间
 import os  # 导入os模块用于文件和目录操作
+import time  # time
+from datetime import datetime  # 导入datetime模块用于获取日期和时间
 from logger import LOG  # 导入日志模块
+from bs4 import BeautifulSoup  # 导入BeautifulSoup库用于解析HTML内容
+from selenium import webdriver  # 导入Selenium库用于网页自动化
+from selenium.webdriver.chrome.service import Service as ChromeService  # 导入Chrome服务
+from webdriver_manager.chrome import ChromeDriverManager  # 导入Chrome驱动管理器
 
 class CSDNClient:
     def __init__(self):
         self.url = 'https://blog.csdn.net/nav/aigc-0'  # CSDN文章列表的URL
-        self.headers = {
-            'referer': 'https://blog.csdn.net/nav',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36'
-        }  # 设置浏览器用户代理
 
     def fetch_article_list(self):
         LOG.debug("准备获取CSDN文章列表。")
         try:
-            response = requests.get(self.url, headers=self.headers, timeout=10)  # 使用自定义的头部进行请求
-            response.raise_for_status()  # 检查请求是否成功
-            articles = self.parse_articles(response.text)  # 解析文章数据
+            # 使用Selenium打开网页
+            options = webdriver.ChromeOptions()
+            options.add_argument('--headless')  # 无头模式
+            options.add_argument('--no-sandbox')
+            options.add_argument('--disable-dev-shm-usage')
+
+            # Enable handling of cookies and redirects
+            options.add_argument('--enable-cookies')  # 确保启用Cookies
+            options.add_argument('accept-insecure-certificates')  # 接受不安全的证书
+            options.add_argument("--enable-javascript")
+
+            # 创建浏览器实例
+            driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+            driver.get(self.url)  # 打开指定的URL
+            self.driver = driver 
+            time.sleep(10)  # 等待页面加载完成（10秒
+            # 获取页面源码
+            html_content = driver.page_source
+            
+            driver.quit()  # 关闭浏览器
+            articles = self.parse_articles(html_content)  # 
             return articles
         except Exception as e:
             LOG.error(f"获取CSDN文章列表失败：{str(e)}")
@@ -56,7 +73,7 @@ class CSDNClient:
         os.makedirs(dir_path, exist_ok=True)  # 确保目录存在
         
         file_path = os.path.join(dir_path, f'{hour}.md')  # 定义文件路径
-        with open(file_path, 'w') as file:
+        with open(file_path, 'w', encoding='utf-8') as file:
             file.write(f"# CSDN Articles List ({date} {hour}:00)\n\n")
             for idx, article in enumerate(articles, start=1):
                 file.write(f"{idx}. [{article['title']}]({article['link']})\n")
