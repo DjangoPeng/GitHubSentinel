@@ -54,6 +54,24 @@ class ReportGenerator:
         LOG.info(f"Hacker News 热点主题报告已保存到 {report_file_path}")
         return report, report_file_path
 
+    def generate_csdn_article_report(self, markdown_file_path):
+        """
+        生成 CSDN 文章报告，并保存为 {original_filename}_article.md。
+        """
+        with open(markdown_file_path, 'r', encoding='utf-8') as file:
+            markdown_content = file.read()
+        
+        system_prompt = self.prompts.get("csdn_report")
+        report = self.llm.generate_report(system_prompt, markdown_content)
+        
+        report_file_path = os.path.splitext(markdown_file_path)[0] + "_topic.md"
+        with open(report_file_path, 'w+', encoding='utf-8') as report_file:
+            report_file.write(report)
+
+        LOG.info(f"Hacker News 热点主题报告已保存到 {report_file_path}")
+        return report, report_file_path
+        
+
     def generate_hn_daily_report(self, directory_path):
         """
         生成 Hacker News 每日汇总的报告，并保存到 hacker_news/tech_trends/ 目录下。

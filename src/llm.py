@@ -49,6 +49,7 @@ class LLM:
         :return: 生成的报告内容。
         """
         LOG.info(f"使用 OpenAI {self.config.openai_model_name} 模型生成报告。")
+        LOG.info(f'消息: {json.dumps(messages, indent=2)}')
         try:
             response = self.client.chat.completions.create(
                 model=self.config.openai_model_name,  # 使用配置中的OpenAI模型名称
