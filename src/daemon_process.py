@@ -8,6 +8,7 @@ from datetime import datetime  # 导入 datetime 模块用于获取当前日期
 from config import Config  # 导入配置管理类
 from github_client import GitHubClient  # 导入GitHub客户端类，处理GitHub API请求
 from hacker_news_client import HackerNewsClient
+from csdn_client import CSDNClient  # 导入CSDN客户端类，处理CSDN API请求
 from notifier import Notifier  # 导入通知器类，用于发送通知
 from report_generator import ReportGenerator  # 导入报告生成器类
 from llm import LLM  # 导入语言模型类，可能用于生成报告内容
@@ -51,6 +52,12 @@ def hn_daily_job(hacker_news_client, report_generator, notifier):
     notifier.notify_hn_report(date, report)
     LOG.info(f"[定时任务执行完毕]")
 
+def csdn_daily_job(csdn_client, report_generator, notifier):
+    LOG.info("[开始执行定时任务]CSDN 每日文章汇总")
+    markdown_file_path = csdn_client.export_articles()
+    report, _ = report_generator.generate_csdn_article_report(markdown_file_path)
+    notifier.send_email("CSDN 每日文章汇总", report)
+    LOG.info(f"[定时任务执行完毕]")
 
 def main():
     # 设置信号处理器
@@ -59,6 +66,7 @@ def main():
     config = Config()  # 创建配置实例
     github_client = GitHubClient(config.github_token)  # 创建GitHub客户端实例
     hacker_news_client = HackerNewsClient() # 创建 Hacker News 客户端实例
+    csdn_client = CSDNClient()  # 创建CSDN客户端实例
     notifier = Notifier(config.email)  # 创建通知器实例
     llm = LLM(config)  # 创建语言模型实例
     report_generator = ReportGenerator(llm, config.report_types)  # 创建报告生成器实例
@@ -78,6 +86,12 @@ def main():
 
     # 安排 hn_daily_job 每天早上10点执行一次
     schedule.every().day.at("10:00").do(hn_daily_job, hacker_news_client, report_generator, notifier)
+
+    # 安排 csdn_daily_job 每24小时执行一次，从10点开始, 启动时立即执行（如不需要可注释）
+    # run once on startup
+    csdn_daily_job(csdn_client, report_generator, notifier)
+    schedule.every().day.at("10:00").do(csdn_daily_job, csdn_client, report_generator, notifier)
+    LOG.info("last job pushed")
 
     try:
         # 在守护进程中持续运行
