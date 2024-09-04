@@ -16,6 +16,7 @@
 
 - [GitHub Sentinel](#github-sentinel)
 - [主要功能](#主要功能)
+- [产品截图](#产品截图)
 - [快速开始](#快速开始)
   - [1. 安装依赖](#1-安装依赖)
   - [2. 配置应用](#2-配置应用)
@@ -57,6 +58,15 @@ GitHub Sentinel 是专为大模型（LLMs）时代打造的智能信息检索和
 - **持续集成**：实现了完备的单元测试，便于进一步配置生产级 CI/CD 流程，确保项目的稳定性和高质量交付。
 
 GitHub Sentinel 不仅能帮助用户自动跟踪和分析 `GitHub 开源项目` 的最新动态，还能快速扩展到其他信息渠道，如 `Hacker News` 的热门话题，提供更全面的信息挖掘与分析能力。
+
+### 产品截图
+
+**GitHub 项目进度跟踪与总结**
+
+![gradio_v0.8_github](images/gradio_v0.8_github.png)
+
+**Hacker News 热门技术话题挖掘**
+![gradio_v0.8_hn](images/gradio_v0.8_hn.png)
 
 
 ## 快速开始
@@ -179,9 +189,6 @@ python src/command_tool.py
 python src/gradio_server.py
 ```
 
-![gradio_v0.8_github](images/gradio_v0.8_github.png)
-
-![gradio_v0.8_hn](images/gradio_v0.8_hn.png)
 
 - 这将在您的机器上启动一个 Web 服务器，允许您通过用户友好的界面管理订阅和生成报告。
 - 默认情况下，Gradio 服务器将可在 `http://localhost:7860` 访问，但如果需要，您可以公开共享它。

@@ -16,6 +16,7 @@
 
 - [GitHub Sentinel](#github-sentinel)
 - [Key Features](#key-features)
+- [Product Screenshot](#product-screenshot)
 - [Quick Start](#quick-start)
   - [1. Install Dependencies](#1-install-dependencies)
   - [2. Configure the Application](#2-configure-the-application)
@@ -56,6 +57,15 @@ GitHub Sentinel is an `AI Agent` designed for the era of large language models (
 
 GitHub Sentinel not only helps users automatically track and analyze the progress of `GitHub open-source projects` but also extends its capabilities to other information sources, such as trending topics on `Hacker News`, providing a more comprehensive approach to information extraction and analysis.
 
+### Product Screenshot
+
+**GitHub Project Tracking and Summary**
+
+![gradio_v0.8_github](images/gradio_v0.8_github.png)
+
+**Hacker News Trending Tech Topic Mining**
+
+![gradio_v0.8_hn](images/gradio_v0.8_hn.png)
 
 ## Quick Start
 
