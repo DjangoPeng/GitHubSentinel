@@ -1,6 +1,6 @@
-requests
-openai
-gradio
-loguru
-schedule
-markdown2
+requests==2.31.0
+gradio==4.42.0
+loguru==0.7.2
+markdown2==2.5.0
+openai==1.44.0
+schedule==1.2.2
