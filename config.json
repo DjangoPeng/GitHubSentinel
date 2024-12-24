@@ -1,29 +1,9 @@
 {
-    "github": {
-        "token": "your_github_token",
-        "subscriptions_file": "subscriptions.json",
-        "progress_frequency_days": 1,
-        "progress_execution_time": "08:00"
+    "github_token": "your_github_token",
+    "notification_settings": {
+        "email": "your_email@example.com",
+        "slack_webhook_url": "your_slack_webhook_url"
     },
-    "email":  {
-        "smtp_server": "smtp.exmail.qq.com",
-        "smtp_port": 465,
-        "from": "pjt@zaijidata.com",
-        "password": "",
-        "to": "test@zaijidata.com"
-    },
-    "llm": {
-        "model_type": "ollama",
-        "openai_model_name": "gpt-4o-mini",
-        "ollama_model_name": "llama3.1",
-        "ollama_api_url": "http://localhost:11434/api/chat"
-    },
-    "report_types": [
-        "github",
-        "hacker_news_hours_topic",
-        "hacker_news_daily_report"
-    ],
-    "slack": {
-        "webhook_url": "your_slack_webhook_url"
-    }
+    "subscriptions_file": "subscriptions.json",
+    "update_interval": 86400
 }
