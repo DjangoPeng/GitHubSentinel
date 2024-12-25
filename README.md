@@ -1,36 +1,17 @@
-# GitHub Sentinel
+GitHub Sentinel v0.1 Release Notes
 
-GitHub Sentinel is an open-source tool AI Agent designed for developers and project managers. It automatically retrieves and aggregates updates from subscribed GitHub repositories on a regular basis (daily/weekly). Key features include subscription management, update retrieval, notification system, and report generation.
+### 新特性
+- 添加交互式命令行界面 (REPL)
+- 支持添加、移除、列出订阅的命令
+- 支持立即获取更新的命令
+- 添加帮助命令显示使用方法
 
-## Features
-- Subscription management
-- Update retrieval
-- Notification system
-- Report generation
+### 改进
+- 优化命令行参数处理逻辑
+- 启动时显示帮助信息
 
-## Getting Started
-1. Install dependencies:
-    ```sh
-    pip install -r requirements.txt
-    ```
+### 修复
+- 修复了一些命令执行过程中的问题和错误处理
 
-2. Configure the application by editing `config.json`.
-
-3. Run the application:
-    ```sh
-    python src/main.py
-    ```
-
-## Configuration
-The configuration file `config.json` should contain the following settings:
-```json
-{
-    "github_token": "your_github_token",
-    "notification_settings": {
-        "email": "your_email@example.com",
-        "slack_webhook_url": "your_slack_webhook_url"
-    },
-    "subscriptions_file": "subscriptions.json",
-    "update_interval": 86400
-}
-```
+### 注意事项
+- 确保配置文件（如 GitHub token）正确设置以使用所有功能
