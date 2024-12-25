@@ -40,6 +40,7 @@ class GitHubClient:
         date_str = datetime.datetime.now().strftime('%Y-%m-%d')
         issues = self.fetch_issues(repo)
         pull_requests = self.fetch_pull_requests(repo)
+        commits = self.fetch_commits(repo)
         filename = f"{repo.replace('/', '_')}_{date_str}.md"
 
         with open(filename, 'w') as f:
@@ -50,6 +51,9 @@ class GitHubClient:
             f.write("\n## Pull Requests\n")
             for pr in pull_requests:
                 f.write(f"- {pr['title']} #{pr['number']}\n")
+            f.write("\n## Commits\n")
+            for commit in commits:
+                f.write(f"- {commit['commit']['message']} (SHA: {commit['sha']})\n")
 
         print(f"Exported daily progress to {filename}")
 

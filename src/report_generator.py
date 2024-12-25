@@ -13,8 +13,9 @@ class ReportGenerator:
 
         issues = self.parse_section(content, "## Issues")
         pull_requests = self.parse_section(content, "## Pull Requests")
+        commits = self.parse_section(content, "## Commits")
 
-        summary = self.llm.summarize_issues_prs(issues, pull_requests)
+        summary = self.llm.summarize_issues_prs_commits(issues, pull_requests, commits)
         report_filename = markdown_file.replace('.md', '_report.md')
 
         with open(report_filename, 'w') as f:
