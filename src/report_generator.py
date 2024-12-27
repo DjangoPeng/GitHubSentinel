@@ -1,83 +1,41 @@
 # src/report_generator.py
 
 import os
-from datetime import date, timedelta
-from logger import LOG  # 导入日志模块，用于记录日志信息
+from llm import LLM
 
 class ReportGenerator:
     def __init__(self, llm):
-        self.llm = llm  # 初始化时接受一个LLM实例，用于后续生成报告
+        self.llm = llm
 
-    def export_daily_progress(self, repo, updates):
-        # 构建仓库的日志文件目录
-        repo_dir = os.path.join('daily_progress', repo.replace("/", "_"))
-        os.makedirs(repo_dir, exist_ok=True)  # 如果目录不存在则创建
-        
-        # 创建并写入日常进展的Markdown文件
-        file_path = os.path.join(repo_dir, f'{date.today()}.md')
-        with open(file_path, 'w') as file:
-            file.write(f"# Daily Progress for {repo} ({date.today()})\n\n")
-            file.write("\n## Issues\n")
-            for issue in updates['issues']:
-                file.write(f"- {issue['title']} #{issue['number']}\n")
-            file.write("\n## Pull Requests\n")
-            for pr in updates['pull_requests']:
-                file.write(f"- {pr['title']} #{pr['number']}\n")
-        return file_path
+    def generate_daily_report(self, markdown_file):
+        with open(markdown_file, 'r') as f:
+            content = f.read()
 
-    def export_progress_by_date_range(self, repo, updates, days):
-        # 构建目录并写入特定日期范围的进展Markdown文件
-        repo_dir = os.path.join('daily_progress', repo.replace("/", "_"))
-        os.makedirs(repo_dir, exist_ok=True)
+        issues = self.parse_section(content, "## Issues")
+        pull_requests = self.parse_section(content, "## Pull Requests")
+        commits = self.parse_section(content, "## Commits")
 
-        today = date.today()
-        since = today - timedelta(days=days)  # 计算起始日期
-        
-        date_str = f"{since}_to_{today}"  # 格式化日期范围字符串
-        file_path = os.path.join(repo_dir, f'{date_str}.md')
-        
-        with open(file_path, 'w') as file:
-            file.write(f"# Progress for {repo} ({since} to {today})\n\n")
-            file.write("\n## Issues Closed in the Last {days} Days\n")
-            for issue in updates['issues']:
-                file.write(f"- {issue['title']} #{issue['number']}\n")
-            file.write("\n## Pull Requests Merged in the Last {days} Days\n")
-            for pr in updates['pull_requests']:
-                file.write(f"- {pr['title']} #{pr['number']}\n")
-        
-        LOG.info(f"Exported time-range progress to {file_path}")  # 记录导出日志
-        return file_path
+        summary = self.llm.summarize_issues_prs_commits(issues, pull_requests, commits)
+        report_filename = markdown_file.replace('.md', '_report.md')
 
-    def generate_daily_report(self, markdown_file_path):
-        # 读取Markdown文件并使用LLM生成日报
-        with open(markdown_file_path, 'r') as file:
-            markdown_content = file.read()
+        with open(report_filename, 'w') as f:
+            f.write("# Daily Report\n\n")
+            f.write(summary)
 
-        report = self.llm.generate_daily_report(markdown_content)  # 调用LLM生成报告
+        print(f"Generated daily report: {report_filename}")
 
-        report_file_path = os.path.splitext(markdown_file_path)[0] + "_report.md"
-        with open(report_file_path, 'w+') as report_file:
-            report_file.write(report)  # 写入生成的报告
+    def parse_section(self, content, section):
+        lines = content.split("\n")
+        section_lines = []
+        capture = False
 
+        for line in lines:
+            if line.strip() == section:
+                capture = True
+                continue
+            if capture and line.startswith("##"):
+                break
+            if capture:
+                section_lines.append(line.strip())
 
-        LOG.info(f"Generated report saved to {report_file_path}")  # 记录生成报告日志
-        
-        return report, report_file_path
-
-
-    def generate_report_by_date_range(self, markdown_file_path, days):
-        # 生成特定日期范围的报告，流程与日报生成类似
-        with open(markdown_file_path, 'r') as file:
-            markdown_content = file.read()
-
-        report = self.llm.generate_daily_report(markdown_content)
-
-        report_file_path = os.path.splitext(markdown_file_path)[0] + f"_report.md"
-        with open(report_file_path, 'w+') as report_file:
-            report_file.write(report)
-
-
-        LOG.info(f"Generated report saved to {report_file_path}")  # 记录生成报告日志
-        
-        return report, report_file_path
-
+        return section_lines

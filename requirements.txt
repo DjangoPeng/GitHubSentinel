@@ -1,5 +1,1 @@
 requests
-openai
-gradio
-loguru
-python-daemon
