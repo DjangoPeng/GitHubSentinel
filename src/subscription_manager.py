@@ -1,4 +1,6 @@
 import json
+from pprint import pprint
+
 
 class SubscriptionManager:
     def __init__(self, subscriptions_file):
@@ -17,6 +19,7 @@ class SubscriptionManager:
         return self.subscriptions
     
     def add_subscription(self, repo):
+        pprint(f"repo:{repo}")
         if repo not in self.subscriptions:
             self.subscriptions.append(repo)
             self.save_subscriptions()

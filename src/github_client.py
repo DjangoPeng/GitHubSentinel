@@ -1,4 +1,5 @@
 # src/github_client.py
+from pprint import pprint
 
 import requests
 import datetime
@@ -6,10 +7,14 @@ import datetime
 class GitHubClient:
     def __init__(self, token):
         self.token = token
-        self.headers = {'Authorization': f'token {self.token}'}
+        self.headers = {
+            'Authorization': f'token {self.token}',
+            'Accept': 'application/vnd.github.v3+json'
+        }
 
     def fetch_updates(self, repo):
         # 获取特定 repo 的更新（commits, issues, pull requests）
+        pprint(f"repo:{repo}")
         updates = {
             'commits': self.fetch_commits(repo),
             'issues': self.fetch_issues(repo),
@@ -19,18 +24,22 @@ class GitHubClient:
 
     def fetch_commits(self, repo):
         url = f'https://api.github.com/repos/{repo}/commits'
+        pprint(f"repo:{repo}")
+        pprint(f"repo--url:{url}")
         response = requests.get(url, headers=self.headers)
         response.raise_for_status()
         return response.json()
 
     def fetch_issues(self, repo):
         url = f'https://api.github.com/repos/{repo}/issues'
+        print(f"url:{url}")
         response = requests.get(url, headers=self.headers)
         response.raise_for_status()
         return response.json()
 
     def fetch_pull_requests(self, repo):
         url = f'https://api.github.com/repos/{repo}/pulls'
+        print(f"url:{url}")
         response = requests.get(url, headers=self.headers)
         response.raise_for_status()
         return response.json()
