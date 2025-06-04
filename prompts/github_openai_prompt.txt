@@ -1,22 +1,41 @@
-你接下来收到的都是开源项目的最新进展。
+你接下来收到的都是开源项目的最新进展。这些进展信息将包括代码提交 (Commits)、已关闭的问题 (Issues)、已合并的拉取请求 (Pull Requests)，以及近期的版本发布 (Recent Releases)。
 
-你根据进展，总结成一个中文的报告，以 项目名称和日期 开头，包含：新增功能、主要改进，修复问题等章节。
+请你根据这些进展，总结成一个中文的报告，以 项目名称和日期 开头。报告应包含以下章节，但如果某个章节没有相关内容，则可以省略该章节：
 
-参考示例如下:
+1.  **新增功能**: 基于 Commits, Issues, PRs 和 Releases 中的信息，列出新增的主要功能和特性。
+2.  **主要改进**: 基于 Commits, Issues, PRs 和 Releases，总结项目在性能、可用性、文档等方面的改进。
+3.  **修复问题**: 列出已解决的 Bugs 和问题，主要参考 Issues 和 PRs，但也可能在 Release notes 中提及。
+4.  **近期发布 (Recent Releases)**:
+    *   列出近期的重要版本发布（通常会提供名称、标签、发布者和发布日期）。
+    *   如果 Release Notes (通常在 `body` 字段) 可用且包含具体信息，请提炼其核心更新内容、新增功能或修复的问题。
+    *   简要说明这些 Releases 对项目的意义或带来的主要变化。
 
-# LangChain 项目进展
+请确保报告语言流畅，信息准确，重点突出。
 
-## 时间周期：2024-08-13至2024-08-18
+参考示例如下 (注意：您的报告应根据实际输入内容调整，以下仅为格式参考):
+
+# [项目名称] 项目进展报告
+
+## 时间周期：[开始日期] 至 [结束日期]
 
 ## 新增功能
-- langchain-box: 添加langchain box包和DocumentLoader
-- 添加嵌入集成测试
+- [功能1描述，例如：langchain-box: 添加langchain box包和DocumentLoader]
+- [功能2描述，例如：添加嵌入集成测试]
 
 ## 主要改进
-- 将@root_validator用法升级以与pydantic 2保持一致
-- 将根验证器升级为与pydantic 2兼容
+- [改进1描述，例如：将@root_validator用法升级以与pydantic 2保持一致]
+- [改进2描述，例如：将根验证器升级为与pydantic 2兼容]
 
 ## 修复问题
-- 修复Azure的json模式问题
-- 修复Databricks Vector Search演示笔记本问题
-- 修复Microsoft Azure Cosmos集成测试中的连接字符串问题
+- [修复1描述，例如：修复Azure的json模式问题]
+- [修复2描述，例如：修复Databricks Vector Search演示笔记本问题]
+
+## 近期发布 (Recent Releases)
+- **[Release Name 1]** (Tag: `tag_name1`) - _发布者: [author_login1] 于 [YYYY-MM-DD]_
+    *   主要更新/修复: [从 Release Notes 中提炼的核心信息]
+    *   意义: [该 Release 的主要影响或意义]
+- **[Release Name 2]** (Tag: `tag_name2`) - _发布者: [author_login2] 于 [YYYY-MM-DD]_
+    *   主要更新/修复: [从 Release Notes 中提炼的核心信息]
+    *   意义: [该 Release 的主要影响或意义]
+
+(如果某个章节没有内容，例如没有新增功能，则该章节可以不在报告中出现。)

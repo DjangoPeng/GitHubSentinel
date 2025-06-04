@@ -1,7 +1,7 @@
 # src/github_client.py
 
 import requests  # 导入requests库用于HTTP请求
-from datetime import datetime, date, timedelta  # 导入日期处理模块
+from datetime import datetime, date, timedelta, timezone  # 导入日期处理模块, 添加timezone
 import os  # 导入os模块用于文件和目录操作
 from logger import LOG  # 导入日志模块
 
@@ -63,6 +63,81 @@ class GitHubClient:
             LOG.error(f"响应详情：{response.text if 'response' in locals() else '无响应数据可用'}")
             return []
 
+    def get_recent_releases(self, owner: str, repo_name: str, days_limit: int = 7, count_limit: int = 5):
+        """
+        Fetches recent releases for a given repository.
+
+        Args:
+            owner: The owner of the repository.
+            repo_name: The name of the repository.
+            days_limit: How many days back to look for releases.
+            count_limit: Maximum number of releases to return.
+
+        Returns:
+            A list of dictionaries, where each dictionary contains details of a release.
+            Returns an empty list if an error occurs or no releases are found.
+        """
+        repo_full_name = f"{owner}/{repo_name}"
+        LOG.debug(f"准备获取 {repo_full_name} 的最新 Releases (最近 {days_limit} 天, 最多 {count_limit} 条)")
+        url = f"https://api.github.com/repos/{owner}/{repo_name}/releases"
+
+        try:
+            response = requests.get(url, headers=self.headers, timeout=10)
+            response.raise_for_status()  # Check for HTTP errors
+            releases_data = response.json()
+        except requests.exceptions.RequestException as e:
+            LOG.error(f"从 {repo_full_name} 获取 Releases API 请求失败: {e}")
+            LOG.error(f"响应详情：{response.text if 'response' in locals() and hasattr(response, 'text') else '无响应数据可用'}")
+            return []
+        except json.JSONDecodeError as e:
+            LOG.error(f"从 {repo_full_name} 获取 Releases API 响应 JSON 解析失败: {e}")
+            LOG.error(f"响应内容: {response.text if 'response' in locals() else 'N/A'}")
+            return []
+
+
+        if not releases_data:
+            LOG.info(f"{repo_full_name} 没有找到任何 Releases。")
+            return []
+
+        recent_releases = []
+        limit_date = datetime.now(timezone.utc) - timedelta(days=days_limit)
+
+        for release in releases_data:
+            try:
+                published_at_str = release.get("published_at")
+                if not published_at_str:
+                    LOG.warning(f"Release '{release.get('name', 'N/A')}' for {repo_full_name} has no 'published_at' date. Skipping.")
+                    continue
+
+                # Parse the ISO 8601 date string and make it timezone-aware (UTC)
+                release_date = datetime.strptime(published_at_str, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+
+                if release_date >= limit_date:
+                    recent_releases.append({
+                        "name": release.get("name"),
+                        "tag_name": release.get("tag_name"),
+                        "published_at": published_at_str, # Keep original string for consistency or reformat if needed
+                        "html_url": release.get("html_url"),
+                        "body": release.get("body"),
+                        "author_login": release.get("author", {}).get("login")
+                    })
+            except Exception as e:
+                LOG.error(f"解析 Release '{release.get('name', 'N/A')}' for {repo_full_name} 时出错: {e}")
+                continue # Skip this release and proceed with others
+
+        # Sort by date (newest first) before applying count_limit
+        recent_releases.sort(key=lambda r: r["published_at"], reverse=True)
+
+        # Apply count_limit
+        if len(recent_releases) > count_limit:
+            LOG.debug(f"对 {repo_full_name} 的 Releases 应用数量限制，从 {len(recent_releases)} 条到 {count_limit} 条。")
+            recent_releases = recent_releases[:count_limit]
+
+        if not recent_releases:
+            LOG.info(f"{repo_full_name} 在过去 {days_limit} 天内没有符合条件的 Releases。")
+
+        return recent_releases
+
     def export_daily_progress(self, repo):
         LOG.debug(f"[准备导出项目进度]：{repo}")
         today = datetime.now().date().isoformat()  # 获取今天的日期
@@ -102,3 +177,5 @@ class GitHubClient:
         
         LOG.info(f"[{repo}]项目最新进展文件生成： {file_path}")  # 记录日志
         return file_path
+
+[end of src/github_client.py]

@@ -23,7 +23,7 @@
   - [3. 如何运行](#3-如何运行)
     - [A. 作为命令行工具运行](#a-作为命令行工具运行)
     - [B. 作为后台服务运行](#b-作为后台服务运行)
-    - [C. 作为 Gradio 服务器运行](#c-作为-gradio-服务器运行)
+    - [C. 作为 Streamlit Web 应用运行](#c-作为-streamlit-web-应用运行)
 - [Ollama 安装与服务发布](#Ollama-安装与服务发布)
 - [单元测试](#单元测试)
   - [单元测试和验证脚本 `validate_tests.sh`](#单元测试和验证脚本-validate_testssh)
@@ -53,7 +53,7 @@ GitHub Sentinel 是专为大模型（LLMs）时代打造的智能信息检索和
 - **报告生成**：基于检索到的更新生成详细的项目进展报告，支持多种格式和模板，满足不同需求。
 - **多模型支持**：结合 OpenAI 和 Ollama 模型，生成自然语言项目报告，提供更智能、精准的信息服务。
 - **定时任务**：支持以守护进程方式执行定时任务，确保信息更新及时获取。
-- **图形化界面**：基于 Gradio 实现了简单易用的 GUI 操作模式，降低使用门槛。
+- **图形化界面**：基于 Streamlit 实现了交互式 Web Dashboard，提供现代化的用户体验。
 - **容器化**：项目支持 Docker 构建和容器化部署，便于在不同环境中快速部署和运行。
 - **持续集成**：实现了完备的单元测试，便于进一步配置生产级 CI/CD 流程，确保项目的稳定性和高质量交付。
 
@@ -61,12 +61,10 @@ GitHub Sentinel 不仅能帮助用户自动跟踪和分析 `GitHub 开源项目`
 
 ### 产品截图
 
-**GitHub 项目进度跟踪与总结**
+**新的 Streamlit Dashboard 界面截图将在此处更新。**
+*(请替换为新 Streamlit 界面的截图，展示其主要功能区域，如配置概览、订阅管理和报告生成界面。)*
 
-![gradio_v0.8_github](images/gradio_v0.8_github.png)
-
-**Hacker News 热门技术话题挖掘**
-![gradio_v0.8_hn](images/gradio_v0.8_hn.png)
+新界面提供了更现代化的外观和改进的交互体验。
 
 
 ## 快速开始
@@ -181,17 +179,24 @@ python src/command_tool.py
     DaemonProcess started.
     ```
 
-#### C. 作为 Gradio 服务器运行
+#### C. 作为 Streamlit Web 应用运行
 
-要使用 Gradio 界面运行应用，允许用户通过 Web 界面与该工具交互：
+要使用 Streamlit 交互式 Dashboard 运行应用，允许用户通过 Web 界面与该工具交互：
 
-```sh
-python src/gradio_server.py
-```
+1.  **确保依赖已安装**:
+    如果您尚未安装项目依赖，或者 `requirements.txt` 中新增了 `streamlit`，请运行：
+    ```sh
+    pip install -r requirements.txt
+    ```
 
+2.  **启动 Streamlit 应用**:
+    ```sh
+    streamlit run src/streamlit_app.py
+    ```
 
-- 这将在您的机器上启动一个 Web 服务器，允许您通过用户友好的界面管理订阅和生成报告。
-- 默认情况下，Gradio 服务器将可在 `http://localhost:7860` 访问，但如果需要，您可以公开共享它。
+- 这将在您的机器上启动一个 Web 应用服务器。
+- 应用启动后，通常可以在浏览器中通过 `http://localhost:8501` 访问。
+- 您可以通过侧边栏导航使用配置概览、订阅管理和报告生成等功能。
 
 
 ## Ollama 安装与服务发布
@@ -230,11 +235,7 @@ Ollama 是一个私有化大模型管理工具，支持本地和容器化部署�
    ```
 
 4. **验证配置**：
-   使用以下命令启动 GitHub Sentinel 并生成报告，以验证 Ollama 配置是否正确：
-
-   ```bash
-   python src/command_tool.py
-   ```
+   请使用 `streamlit run src/streamlit_app.py` 启动 Web 界面并尝试生成一份使用 Ollama 模型的报告，或使用命令行工具 `python src/command_tool.py`。
 
    如果配置正确，您将能够通过 Ollama 模型生成报告。
 
