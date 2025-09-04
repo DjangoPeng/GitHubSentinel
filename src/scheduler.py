@@ -17,7 +17,7 @@ class Scheduler:
         while True:
             subscriptions = self.subscription_manager.list_subscriptions()
             for repo in subscriptions:
-                updates = self.github_client.fetch_updates(repo)
+                updates = self.github_client.export_daily_progress(repo)
                 markdown_file_path = self.report_generator.export_daily_progress(repo, updates)
                 self.report_generator.generate_daily_report(markdown_file_path)
             time.sleep(self.interval)
