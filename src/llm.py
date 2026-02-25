@@ -3,6 +3,7 @@ import requests
 from openai import OpenAI  # 导入OpenAI库用于访问GPT模型
 from logger import LOG  # 导入日志模块
 
+
 class LLM:
     def __init__(self, config):
         """
@@ -18,7 +19,9 @@ class LLM:
             self.api_url = config.ollama_api_url  # 设置Ollama API的URL
         else:
             LOG.error(f"不支持的模型类型: {self.model}")
-            raise ValueError(f"不支持的模型类型: {self.model}")  # 如果模型类型不支持，抛出错误
+            raise ValueError(
+                f"不支持的模型类型: {self.model}"
+            )  # 如果模型类型不支持，抛出错误
 
     def generate_report(self, system_prompt, user_content):
         """
@@ -29,7 +32,15 @@ class LLM:
         :return: 生成的报告内容。
         """
         messages = [
-            {"role": "system", "content": system_prompt},
+            # {"role": "system", "content": system_prompt},
+            {
+                "role": "system",
+                "content": """你是开源项目分析专家。请帮我分析目标项目的活跃度、贡献者情况和问题管理效率。分析数据来源包括 PRs、Issues 和 Commits。报告应覆盖：
+                1. 项目活跃度分析：每月提交量、PR合并率、Issue处理情况
+                2. 贡献者分析：核心贡献者、贡献分布
+                3. 问题管理分析：Issue类型分布、解决效率
+                4. 总结与改进建议""",
+            },
             {"role": "user", "content": user_content},
         ]
 
@@ -52,7 +63,7 @@ class LLM:
         try:
             response = self.client.chat.completions.create(
                 model=self.config.openai_model_name,  # 使用配置中的OpenAI模型名称
-                messages=messages
+                messages=messages,
             )
             LOG.debug("GPT 响应: {}", response)
             return response.choices[0].message.content  # 返回生成的报告内容
@@ -74,10 +85,12 @@ class LLM:
                 "messages": messages,
                 "max_tokens": 4000,
                 "temperature": 0.7,
-                "stream": False
+                "stream": False,
             }
 
-            response = requests.post(self.api_url, json=payload)  # 发送POST请求到Ollama API
+            response = requests.post(
+                self.api_url, json=payload
+            )  # 发送POST请求到Ollama API
             response_data = response.json()
 
             # 调试输出查看完整的响应结构
@@ -94,12 +107,14 @@ class LLM:
             LOG.error(f"生成报告时发生错误：{e}")
             raise
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     from config import Config  # 导入配置管理类
+
     config = Config()
     llm = LLM(config)
 
-    markdown_content="""
+    markdown_content = """
 # Progress for langchain-ai/langchain (2024-08-20 to 2024-08-21)
 
 ## Issues Closed in the Last 1 Days
